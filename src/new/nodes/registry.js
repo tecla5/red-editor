@@ -150,6 +150,3 @@ export class NodesRegistry extends Context {
     return nodeDefinitions[nt];
   }
 }
-return exports;
-}
-}

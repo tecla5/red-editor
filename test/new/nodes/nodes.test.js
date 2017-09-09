@@ -72,4 +72,12 @@ test('nodes: convertNode', t => {
 // updateConfigNodeUsers
 // flowVersion
 // clear
-// ...
+// getWorkspaceOrder
+// setWorkspaceOrder
+// eachNode
+// eachLink
+// eachConfig
+// eachSubflow
+// eachWorkspace
+// originalFlow
+// dirty

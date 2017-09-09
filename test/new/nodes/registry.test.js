@@ -17,4 +17,5 @@ test('registry: getNodeSet', t => {})
 test('registry: enableNodeSet', t => {})
 test('registry: disableNodeSet', t => {})
 test('registry: registerNodeType', t => {})
-// ...
+test('registry: removeNodeType', t => {})
+test('registry: getNodeType', t => {})
