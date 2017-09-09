@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-class Notifications extends Context {
+export class Notifications extends Context {
     constructor() {
         this.currentNotifications = [];
         var c = 0; // number of notifications made

@@ -503,7 +503,4 @@ export class Library extends Context {
         $("#node-input-library-filename").attr('nodes', JSON.stringify(nns));
         exportToLibraryDialog.dialog("open");
     }
-
-
-
 }

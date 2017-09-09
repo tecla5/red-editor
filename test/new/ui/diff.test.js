@@ -1,0 +1,1 @@
+const nightmare = require('../nightmare')

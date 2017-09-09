@@ -31,25 +31,24 @@ export class Search extends Context {
     var keys = [];
     var results = [];
 
+    var disable = () => {
+      this.disabled = true;
+    }
+    var enable = () => {
+      this.disabled = false;
+    }
+
     ctx.actions.add("core:search", show);
 
-    ctx.events.on("editor:open", function () {
-      disabled = true;
-    });
-    ctx.events.on("editor:close", function () {
-      disabled = false;
-    });
-    ctx.events.on("type-search:open", function () {
-      disabled = true;
-    });
-    ctx.events.on("type-search:close", function () {
-      disabled = false;
-    });
+    ctx.events.on("editor:open", disable);
+    ctx.events.on("editor:close", enable);
+    ctx.events.on("type-search:open", disable);
+    ctx.events.on("type-search:close", enable);
 
-    $("#header-shade").on('mousedown', hide);
-    $("#editor-shade").on('mousedown', hide);
-    $("#palette-shade").on('mousedown', hide);
-    $("#sidebar-shade").on('mousedown', hide);
+    $("#header-shade").on('mousedown', this.hide);
+    $("#editor-shade").on('mousedown', this.hide);
+    $("#palette-shade").on('mousedown', this.hide);
+    $("#sidebar-shade").on('mousedown', this.hide);
 
   }
 
@@ -83,8 +82,6 @@ export class Search extends Context {
         }
       }
     }
-
-
   }
 
   indexWorkspace() {
@@ -290,7 +287,7 @@ export class Search extends Context {
   }
 
   reveal(node) {
-    hide();
+    this.hide();
     ctx.view.reveal(node.id);
   }
 

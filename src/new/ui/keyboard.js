@@ -56,7 +56,7 @@ const firefoxKeyCodeMap = {
 
 const isMac = /Mac/i.test(window.navigator.platform);
 
-export class Editor extends Context {
+export class Keyboard extends Context {
     constructor(ctx) {
         super(ctx)
 
