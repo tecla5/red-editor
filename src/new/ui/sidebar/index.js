@@ -139,9 +139,9 @@ export class Sidebar extends Context {
                 toggleSidebar(state);
             }
         });
-        showSidebar();
-        ctx.sidebar.info.init();
-        ctx.sidebar.config.init();
+        this.showSidebar();
+        ctx.sidebar.info = new SidebarTabInfo(ctx);
+        ctx.sidebar.config = new SidebarTabConfig(ctx);
         // hide info bar at start if screen rather narrow...
         if ($(window).width() < 600) {
             ctx.menu.setSelected("menu-item-sidebar", false);

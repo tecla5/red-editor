@@ -17,6 +17,35 @@ import {
     Context
 } from './context'
 
+import {
+    Actions,
+    Clipboard,
+    Deploy,
+    Diff,
+    Editor,
+    Keyboard,
+    Library,
+    Notifications,
+    Search,
+    state,
+    Subflow,
+    Tray,
+    TypeSearch,
+    UserSettings,
+    Utils,
+    Workspaces,
+    Sidebar,
+    SidebarTabConfig,
+    SidebarTabInfo,
+    Palette,
+    PaletteEditor
+}
+from './ui'
+
+import {
+    Nodes
+} from '.'
+
 export class Main extends Context {
     constructor(ctx) {
         super(ctx);
@@ -360,39 +389,72 @@ export class Main extends Context {
             onselect: "core:show-about"
         });
 
+        // TODO: All UI editor wiring should be done in ui/main loadEditor() method
 
-        ctx.view.init();
-        ctx.userSettings.init();
-        ctx.user.init();
-        ctx.library.init();
-        ctx.keyboard.init();
-        ctx.palette.init();
+        ctx.actions = new Actions(ctx)
+        ctx.clipboard = new Clipboard(ctx)
+
+        // RED.settings.theme("deployButton",null
+        var deployCtx = ctx.settings.theme('deployButton', null)
+        ctx.deploy = new Deploy(deployCtx)
+        ctx.diff = new Diff(ctx)
+        ctx.editor = new Editor(ctx)
+        ctx.keyboard = new Keyboard(ctx)
+        ctx.library = new Library(ctx)
+        ctx.notifications = new Notifications(ctx)
+        ctx.search = new Search(ctx)
+        ctx.subflow = new Subflow(ctx)
+        ctx.tray = new Tray(ctx)
+        ctx.typeSearch = new TypeSearch(ctx)
+        ctx.userSettings = new UserSettings(ctx)
+        ctx.utils = new Utils(ctx)
+        ctx.workspaces = new Workspaces(ctx)
+        ctx.sidebar = new Sidebar(ctx)
+
+        ctx.palette = new Palette(ctx)
+
+        // see above or legacy/main
         if (ctx.settings.theme('palette.editable') !== false) {
-            ctx.palette.editor.init();
+            ctx.palette.editor = new PaletteEditor(ctx)
         }
 
-        ctx.sidebar.init();
-        ctx.subflow.init();
-        ctx.workspaces.init();
-        ctx.clipboard.init();
-        ctx.search.init();
-        ctx.editor.init();
-        ctx.diff.init();
+        ctx.touch = {
+            radialMenu: new RadialMenu(ctx)
+        }
+        ctx.nodes = new Nodes(ctx)
 
-        ctx.menu.init({
-            id: "btn-sidemenu",
-            options: menuOptions
-        });
+        // ctx.view.init();
+        // ctx.userSettings.init();
+        // ctx.user.init();
+        // ctx.library.init();
+        // ctx.keyboard.init();
+        // ctx.palette.init();
+        // if (ctx.settings.theme('palette.editable') !== false) {
+        //     ctx.palette.editor.init();
+        // }
 
-        ctx.deploy.init(ctx.settings.theme("deployButton", null));
+        // ctx.sidebar.init();
+        // ctx.subflow.init();
+        // ctx.workspaces.init();
+        // ctx.clipboard.init();
+        // ctx.search.init();
+        // ctx.editor.init();
+        // ctx.diff.init();
+
+        // ctx.menu.init({
+        //     id: "btn-sidemenu",
+        //     options: menuOptions
+        // });
+
+        // ctx.deploy.init(ctx.settings.theme("deployButton", null));
 
         ctx.actions.add("core:show-about", showAbout);
-        ctx.nodes.init();
+        // ctx.nodes.init();
         ctx.comms.connect();
 
         $("#main-container").show();
         $(".header-toolbar").show();
 
-        loadNodeList();
+        this.loadNodeList();
     }
 }

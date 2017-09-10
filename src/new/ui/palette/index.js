@@ -22,6 +22,10 @@ export {
 }
 from './editor'
 
+import {
+    Context
+} from '../context'
+
 export class Palette extends Context {
 
     constructor(ctx) {

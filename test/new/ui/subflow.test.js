@@ -1,6 +1,5 @@
 const nightmare = require('../nightmare')
 import ava from 'ava'
-
 import {
   Subflow
 } from './ui'

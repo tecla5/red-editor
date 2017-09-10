@@ -13,31 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-export class Editor {
-    constructor() {
-        var disabled = false;
+import {
+    Context
+} from '../context'
 
-        var editorTabs;
-        var filterInput;
-        var searchInput;
-        var nodeList;
-        var packageList;
-        var loadedList = [];
-        var filteredList = [];
-        var loadedIndex = {};
+export class PaletteEditor extends Context {
+    constructor(ctx) {
+        super(ctx)
+        this.disabled = false;
 
-        var typesInUse = {};
-        var nodeEntries = {};
-        var eventTimers = {};
-        var activeFilter = "";
+        // editorTabs;
+        // filterInput;
+        // searchInput;
+        // nodeList;
+        // packageList;
+        this.loadedList = [];
+        this.filteredList = [];
+        this.loadedIndex = {};
 
-        var settingsPane;
-        var catalogueCount;
-        var catalogueLoadStatus = [];
-        var catalogueLoadStart;
-        var catalogueLoadErrors = false;
+        this.typesInUse = {};
+        this.nodeEntries = {};
+        this.eventTimers = {};
+        this.activeFilter = "";
 
-        var activeSort = sortModulesAZ;
+        // settingsPane;
+        // catalogueCount;
+        this.catalogueLoadStatus = [];
+        // catalogueLoadStart;
+        this.catalogueLoadErrors = false;
+
+        this.activeSort = this.sortModulesAZ;
 
         if (RED.settings.theme('palette.editable') === false) {
             return;

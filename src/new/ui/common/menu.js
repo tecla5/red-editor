@@ -13,15 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-RED.menu = (function() {
+class Menu {
+    constructor(options) {
+        this.menuItems = {};
+        var menuParent = $("#" + options.id);
 
-    var menuItems = {};
+        var topMenu = $("<ul/>", {
+            id: options.id + "-submenu",
+            class: "dropdown-menu pull-right"
+        });
 
-    function createMenuItem(opt) {
+        if (menuParent.length === 1) {
+            topMenu.insertAfter(menuParent);
+        }
+
+        var lastAddedSeparator = false;
+        for (var i = 0; i < options.options.length; i++) {
+            var opt = options.options[i];
+            if (opt !== null || !lastAddedSeparator) {
+                var li = createMenuItem(opt);
+                if (li) {
+                    li.appendTo(topMenu);
+                    lastAddedSeparator = (opt === null);
+                }
+            }
+        }
+
+        return topMenu;
+    }
+
+    createMenuItem(opt) {
         var item;
 
         if (opt !== null && opt.id) {
-            var themeSetting = RED.settings.theme("menu."+opt.id);
+            var themeSetting = RED.settings.theme("menu." + opt.id);
             if (themeSetting === false) {
                 return null;
             }
@@ -33,7 +58,7 @@ RED.menu = (function() {
                 // May need to migrate pre-0.17 setting
 
                 if (savedStateActive !== null) {
-                    RED.settings.set(opt.setting,savedStateActive);
+                    RED.settings.set(opt.setting, savedStateActive);
                     RED.settings.remove("menu-" + opt.id);
                 } else {
                     savedStateActive = RED.settings.get(opt.setting);
@@ -41,17 +66,17 @@ RED.menu = (function() {
             }
             if (savedStateActive) {
                 link.addClass("active");
-                triggerAction(opt.id,true);
+                triggerAction(opt.id, true);
             } else if (savedStateActive === false) {
                 link.removeClass("active");
-                triggerAction(opt.id,false);
+                triggerAction(opt.id, false);
             } else if (opt.hasOwnProperty("selected")) {
                 if (opt.selected) {
                     link.addClass("active");
                 } else {
                     link.removeClass("active");
                 }
-                triggerAction(opt.id,opt.selected);
+                triggerAction(opt.id, opt.selected);
             }
         }
 
@@ -61,10 +86,10 @@ RED.menu = (function() {
             item = $('<li></li>');
 
             if (opt.group) {
-                item.addClass("menu-group-"+opt.group);
+                item.addClass("menu-group-" + opt.group);
 
             }
-            var linkContent = '<a '+(opt.id?'id="'+opt.id+'" ':'')+'tabindex="-1" href="#">';
+            var linkContent = '<a ' + (opt.id ? 'id="' + opt.id + '" ' : '') + 'tabindex="-1" href="#">';
             if (opt.toggle) {
                 linkContent += '<i class="fa fa-square pull-left"></i>';
                 linkContent += '<i class="fa fa-check-square pull-left"></i>';
@@ -72,17 +97,17 @@ RED.menu = (function() {
             }
             if (opt.icon !== undefined) {
                 if (/\.png/.test(opt.icon)) {
-                    linkContent += '<img src="'+opt.icon+'"/> ';
+                    linkContent += '<img src="' + opt.icon + '"/> ';
                 } else {
-                    linkContent += '<i class="'+(opt.icon?opt.icon:'" style="display: inline-block;"')+'"></i> ';
+                    linkContent += '<i class="' + (opt.icon ? opt.icon : '" style="display: inline-block;"') + '"></i> ';
                 }
             }
 
             if (opt.sublabel) {
-                linkContent += '<span class="menu-label-container"><span class="menu-label">'+opt.label+'</span>'+
-                               '<span class="menu-sublabel">'+opt.sublabel+'</span></span>'
+                linkContent += '<span class="menu-label-container"><span class="menu-label">' + opt.label + '</span>' +
+                    '<span class="menu-sublabel">' + opt.sublabel + '</span></span>'
             } else {
-                linkContent += '<span class="menu-label">'+opt.label+'</span>'
+                linkContent += '<span class="menu-label">' + opt.label + '</span>'
             }
 
             linkContent += '</a>';
@@ -92,7 +117,7 @@ RED.menu = (function() {
             menuItems[opt.id] = opt;
 
             if (opt.onselect) {
-                link.click(function(e) {
+                link.click(function (e) {
                     e.preventDefault();
                     if ($(this).parent().hasClass("disabled")) {
                         return;
@@ -105,11 +130,11 @@ RED.menu = (function() {
                                     if (menuItems.hasOwnProperty(m)) {
                                         var mi = menuItems[m];
                                         if (mi.id != opt.id && opt.toggle == mi.toggle) {
-                                            setSelected(mi.id,false);
+                                            setSelected(mi.id, false);
                                         }
                                     }
                                 }
-                                setSelected(opt.id,true);
+                                setSelected(opt.id, true);
                             }
                         } else {
                             setSelected(opt.id, !selected);
@@ -122,18 +147,18 @@ RED.menu = (function() {
                     setInitialState();
                 }
             } else if (opt.href) {
-                link.attr("target","_blank").attr("href",opt.href);
+                link.attr("target", "_blank").attr("href", opt.href);
             } else if (!opt.options) {
                 item.addClass("disabled");
-                link.click(function(event) {
+                link.click(function (event) {
                     event.preventDefault();
                 });
             }
             if (opt.options) {
                 item.addClass("dropdown-submenu pull-left");
-                var submenu = $('<ul id="'+opt.id+'-submenu" class="dropdown-menu"></ul>').appendTo(item);
+                var submenu = $('<ul id="' + opt.id + '-submenu" class="dropdown-menu"></ul>').appendTo(item);
 
-                for (var i=0;i<opt.options.length;i++) {
+                for (var i = 0; i < opt.options.length; i++) {
                     var li = createMenuItem(opt.options[i]);
                     if (li) {
                         li.appendTo(submenu);
@@ -149,84 +174,60 @@ RED.menu = (function() {
         return item;
 
     }
-    function createMenu(options) {
 
-        var menuParent = $("#"+options.id);
-
-        var topMenu = $("<ul/>",{id:options.id+"-submenu", class:"dropdown-menu pull-right"});
-
-        if (menuParent.length === 1) {
-            topMenu.insertAfter(menuParent);
-        }
-
-        var lastAddedSeparator = false;
-        for (var i=0;i<options.options.length;i++) {
-            var opt = options.options[i];
-            if (opt !== null || !lastAddedSeparator) {
-                var li = createMenuItem(opt);
-                if (li) {
-                    li.appendTo(topMenu);
-                    lastAddedSeparator = (opt === null);
-                }
-            }
-        }
-
-        return topMenu;
-    }
-
-    function triggerAction(id, args) {
+    triggerAction(id, args) {
         var opt = menuItems[id];
         var callback = opt.onselect;
         if (typeof opt.onselect === 'string') {
             callback = RED.actions.get(opt.onselect);
         }
         if (callback) {
-            callback.call(opt,args);
+            callback.call(opt, args);
         } else {
-            console.log("No callback for",id,opt.onselect);
+            console.log("No callback for", id, opt.onselect);
         }
     }
 
-    function isSelected(id) {
+    isSelected(id) {
         return $("#" + id).hasClass("active");
     }
 
-    function setSelected(id,state) {
+    setSelected(id, state) {
         if (isSelected(id) == state) {
             return;
         }
         var opt = menuItems[id];
         if (state) {
-            $("#"+id).addClass("active");
+            $("#" + id).addClass("active");
         } else {
-            $("#"+id).removeClass("active");
+            $("#" + id).removeClass("active");
         }
         if (opt && opt.onselect) {
-            triggerAction(opt.id,state);
+            triggerAction(opt.id, state);
         }
-        RED.settings.set(opt.setting||("menu-"+opt.id), state);
+        RED.settings.set(opt.setting || ("menu-" + opt.id), state);
     }
 
-    function toggleSelected(id) {
-        setSelected(id,!isSelected(id));
+    toggleSelected(id) {
+        setSelected(id, !isSelected(id));
     }
 
-    function setDisabled(id,state) {
+    setDisabled(id, state) {
         if (state) {
-            $("#"+id).parent().addClass("disabled");
+            $("#" + id).parent().addClass("disabled");
         } else {
-            $("#"+id).parent().removeClass("disabled");
+            $("#" + id).parent().removeClass("disabled");
         }
     }
 
-    function addItem(id,opt) {
+    addItem(id, opt) {
         var item = createMenuItem(opt);
         if (opt.group) {
-            var groupItems = $("#"+id+"-submenu").children(".menu-group-"+opt.group);
+            var groupItems = $("#" + id + "-submenu").children(".menu-group-" + opt.group);
             if (groupItems.length === 0) {
-                item.appendTo("#"+id+"-submenu");
+                item.appendTo("#" + id + "-submenu");
             } else {
-                for (var i=0;i<groupItems.length;i++) {
+                for (var i = 0; i < groupItems.length; i++) {
                     var groupItem = groupItems[i];
                     var label = $(groupItem).find(".menu-label").html();
                     if (opt.label < label) {
@@ -235,33 +236,21 @@ RED.menu = (function() {
                     }
                 }
                 if (i === groupItems.length) {
-                    item.appendTo("#"+id+"-submenu");
+                    item.appendTo("#" + id + "-submenu");
                 }
             }
         } else {
-            item.appendTo("#"+id+"-submenu");
+            item.appendTo("#" + id + "-submenu");
         }
     }
-    function removeItem(id) {
-        $("#"+id).parent().remove();
+    removeItem(id) {
+        $("#" + id).parent().remove();
     }
 
-    function setAction(id,action) {
+    setAction(id, action) {
         var opt = menuItems[id];
         if (opt) {
             opt.onselect = action;
         }
     }
-
-    return {
-        init: createMenu,
-        setSelected: setSelected,
-        isSelected: isSelected,
-        toggleSelected: toggleSelected,
-        setDisabled: setDisabled,
-        addItem: addItem,
-        removeItem: removeItem,
-        setAction: setAction
-        //TODO: add an api for replacing a submenu - see library.js:loadFlowLibrary
-    }
-})();
+}

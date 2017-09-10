@@ -5,12 +5,7 @@ from './history'
 
 export {
   NodeConfig,
-  NodesRegistry
-}
-from './nodes'
-
-export {
-  NodeConfig,
+  Nodes,
   NodesRegistry
 }
 from './nodes'

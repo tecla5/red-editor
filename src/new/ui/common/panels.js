@@ -15,10 +15,9 @@
  **/
 
 
-RED.panels = (function() {
-
-    function createPanel(options) {
-        var container = options.container || $("#"+options.id);
+export class Panel {
+    constructor(options) {
+        var container = options.container || $("#" + options.id);
         var children = container.children();
         if (children.length !== 2) {
             throw new Error("Container must have exactly two children");
@@ -32,50 +31,46 @@ RED.panels = (function() {
         var panelRatio;
 
         separator.draggable({
-                axis: "y",
-                containment: container,
-                scroll: false,
-                start:function(event,ui) {
-                    var height = container.height();
-                    startPosition = ui.position.top;
-                    panelHeights = [$(children[0]).height(),$(children[1]).height()];
-                },
-                drag: function(event,ui) {
-                    var height = container.height();
-                    var delta = ui.position.top-startPosition;
-                    var newHeights = [panelHeights[0]+delta,panelHeights[1]-delta];
-                    $(children[0]).height(newHeights[0]);
-                    $(children[1]).height(newHeights[1]);
-                    if (options.resize) {
-                        options.resize(newHeights[0],newHeights[1]);
-                    }
-                    ui.position.top -= delta;
-                    panelRatio = newHeights[0]/height;
-                },
-                stop:function(event,ui) {
-                    modifiedHeights = true;
+            axis: "y",
+            containment: container,
+            scroll: false,
+            start: function (event, ui) {
+                var height = container.height();
+                startPosition = ui.position.top;
+                panelHeights = [$(children[0]).height(), $(children[1]).height()];
+            },
+            drag: function (event, ui) {
+                var height = container.height();
+                var delta = ui.position.top - startPosition;
+                var newHeights = [panelHeights[0] + delta, panelHeights[1] - delta];
+                $(children[0]).height(newHeights[0]);
+                $(children[1]).height(newHeights[1]);
+                if (options.resize) {
+                    options.resize(newHeights[0], newHeights[1]);
                 }
+                ui.position.top -= delta;
+                panelRatio = newHeights[0] / height;
+            },
+            stop: function (event, ui) {
+                modifiedHeights = true;
+            }
         });
 
         return {
-            resize: function(height) {
-                var panelHeights = [$(children[0]).height(),$(children[1]).height()];
+            resize: function (height) {
+                var panelHeights = [$(children[0]).height(), $(children[1]).height()];
                 container.height(height);
                 if (modifiedHeights) {
-                    var topPanelHeight = panelRatio*height;
+                    var topPanelHeight = panelRatio * height;
                     var bottomPanelHeight = height - topPanelHeight - 48;
-                    panelHeights = [topPanelHeight,bottomPanelHeight];
+                    panelHeights = [topPanelHeight, bottomPanelHeight];
                     $(children[0]).height(panelHeights[0]);
                     $(children[1]).height(panelHeights[1]);
                 }
                 if (options.resize) {
-                    options.resize(panelHeights[0],panelHeights[1]);
+                    options.resize(panelHeights[0], panelHeights[1]);
                 }
             }
         }
     }
-
-    return {
-        create: createPanel
-    }
-})();
+}
