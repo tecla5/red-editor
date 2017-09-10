@@ -1,5 +1,10 @@
-export class Actions {
-    constructor() {
+import {
+    Context
+} from '../context'
+
+export class Actions extends Context {
+    constructor(ctx) {
+        super(ctx)
         this.actions = {}
     }
 
@@ -22,6 +27,8 @@ export class Actions {
     }
 
     listActions() {
+        var RED = this.ctx;
+
         var result = [];
         Object.keys(actions).forEach(function (action) {
             var shortcut = RED.keyboard.getShortcut(action);

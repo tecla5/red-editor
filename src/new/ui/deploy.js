@@ -19,12 +19,6 @@ import {
 } from '../context'
 
 export class Deploy extends Context {
-
-    changeDeploymentType(type) {
-        deploymentType = type;
-        $("#btn-deploy-icon").attr("src", deploymentTypes[type].img);
-    }
-
     /**
      * options:
      *   type: "default" - Button with drop-down options - no further customisation available
@@ -289,6 +283,11 @@ export class Deploy extends Context {
                 activeNotifyMessage = ctx.notify(message, null, true);
             }
         });
+    }
+
+    changeDeploymentType(type) {
+        deploymentType = type;
+        $("#btn-deploy-icon").attr("src", deploymentTypes[type].img);
     }
 
     getNodeInfo(node) {

@@ -13,10 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
-import {
-    Context
-} from '../context'
-
 const cmdCtrlKey = '<span class="help-key">' + (isMac ? '&#8984;' : 'Ctrl') + '</span>';
 
 const keyMap = {
@@ -55,6 +51,10 @@ const firefoxKeyCodeMap = {
 }
 
 const isMac = /Mac/i.test(window.navigator.platform);
+
+import {
+    Context
+} from '../context'
 
 export class Keyboard extends Context {
     constructor(ctx) {

@@ -65,18 +65,24 @@ const viewSettings = [{
 
 const allSettings = {};
 
-class UserSettings {
+import {
+    Context
+} from '../context'
 
-    constructor() {
+class UserSettings extends Context {
+
+    constructor(ctx) {
+        super(ctx)
+
         RED.actions.add("core:show-user-settings", show);
         RED.actions.add("core:show-help", function () {
             show('keyboard')
         });
 
-        addPane({
+        this.addPane({
             id: 'view',
             title: RED._("menu.label.view.view"),
-            get: createViewPane,
+            get: this.createViewPane,
             close: function () {
                 viewSettings.forEach(function (section) {
                     section.options.forEach(function (opt) {
@@ -206,10 +212,7 @@ class UserSettings {
         RED.tray.show(trayOptions);
     }
 
-
-
     createViewPane() {
-
         var pane = $('<div id="user-settings-tab-view" class="node-help"></div>');
 
         viewSettings.forEach(function (section) {
