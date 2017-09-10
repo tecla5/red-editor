@@ -18,8 +18,13 @@ import {
 } from './context'
 
 import {
-    registry
+    registry,
+    NodesRegistry
 } from './registry'
+
+export {
+    NodesRegistry
+}
 
 export class NodeConfig extends Context {
     constructor(ctx) {

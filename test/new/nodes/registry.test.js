@@ -1,8 +1,10 @@
+const nightmare = require('../nightmare')
 import ava from 'ava'
+import {
+  NodesRegistry
+} from '../ui'
 
-test('NodesRegistry: create', t => {
-
-})
+test('NodesRegistry: create', t => {})
 
 test('registry: setModulePendingUpdated', t => {})
 test('registry: getModule', t => {})

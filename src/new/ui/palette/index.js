@@ -17,6 +17,11 @@
 var exclusion = ['config', 'unknown', 'deprecated'];
 var coreCategories = ['subflows', 'input', 'output', 'function', 'social', 'mobile', 'storage', 'analysis', 'advanced'];
 
+export {
+    PaletteEditor
+}
+from './editor'
+
 export class Palette extends Context {
 
     constructor(ctx) {

@@ -1,13 +1,15 @@
 const nightmare = require('../nightmare')
-
 import ava from 'ava'
+import {
+  Palette
+} from '../ui'
 
-test('Editor: createCategoryContainer', t => {})
-test('Editor: setLabel', t => {})
-test('Editor: escapeNodeType', t => {})
-test('Editor: addNodeType', t => {})
-test('Editor: removeNodeType', t => {})
-test('Editor: hideNodeType', t => {})
-test('Editor: showNodeType', t => {})
-test('Editor: refreshNodeTypes', t => {})
-test('Editor: filterChange', t => {})
+test('Palette: createCategoryContainer', t => {})
+test('Palette: setLabel', t => {})
+test('Palette: escapeNodeType', t => {})
+test('Palette: addNodeType', t => {})
+test('Palette: removeNodeType', t => {})
+test('Palette: hideNodeType', t => {})
+test('Palette: showNodeType', t => {})
+test('Palette: refreshNodeTypes', t => {})
+test('Palette: filterChange', t => {})

@@ -3,7 +3,7 @@ import ava from 'ava'
 
 import {
   TypeSearch
-} from '../../../src/new/ui/typeSearch'
+} from './ui'
 
 test('TypeSearch: create', t => {})
 test('TypeSearch: search', t => {})

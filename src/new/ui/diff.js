@@ -589,7 +589,7 @@ export class Diff extends Context {
                 diff: remoteDiff
             }
         }
-        createNodePropertiesTable(def, node, localNode, remoteNode).appendTo(div);
+        this.createNodePropertiesTable(def, node, localNode, remoteNode).appendTo(div);
 
         var selectState = "";
 
@@ -606,7 +606,7 @@ export class Diff extends Context {
             selectState = currentDiff.resolutions[node.id];
         }
         // Node row
-        createNodeConflictRadioBoxes(node, div, localNodeDiv, remoteNodeDiv, false, !conflicted, selectState);
+        this.createNodeConflictRadioBoxes(node, div, localNodeDiv, remoteNodeDiv, false, !conflicted, selectState);
         row.click(function (evt) {
             $(this).parent().toggleClass('collapsed');
         });
@@ -1029,9 +1029,9 @@ export class Diff extends Context {
     // }
     showRemoteDiff(diff) {
         if (diff === undefined) {
-            getRemoteDiff(showRemoteDiff);
+            this.getRemoteDiff(showRemoteDiff);
         } else {
-            showDiff(diff);
+            this.showDiff(diff);
         }
     }
 

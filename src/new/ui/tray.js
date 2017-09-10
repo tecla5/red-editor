@@ -37,6 +37,7 @@ export class Tray extends Context {
             }
         });
     }
+
     show(options) {
         if (stack.length > 0) {
             var oldTray = stack[stack.length - 1];
@@ -53,6 +54,7 @@ export class Tray extends Context {
         }
 
     }
+
     async close() {
         if (stack.length > 0) {
             var tray = stack.pop();
@@ -189,7 +191,7 @@ export class Tray extends Context {
             });
         }
 
-        finishBuild() {
+        function finishBuild() {
             $("#header-shade").show();
             $("#editor-shade").show();
             $("#palette-shade").show();
@@ -249,6 +251,7 @@ export class Tray extends Context {
                 });
             }, 0);
         }
+
         if (options.open) {
             if (options.open.length === 1) {
                 options.open(el);

@@ -17,6 +17,15 @@ import {
     Context
 } from '../context'
 
+export {
+    SidebarTabConfig
+}
+from './tab-config'
+export {
+    SidebarTabInfo
+}
+from './tab-info'
+
 export class Sidebar extends Context {
     constructor(ctx) {
         super(ctx)

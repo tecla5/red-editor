@@ -3,7 +3,7 @@ import ava from 'ava'
 
 import {
   UserSettings
-} from '../../../src/new/ui/userSettings'
+} from './ui'
 
 test('UserSettings: create', t => {})
 test('UserSettings: addPane', t => {})

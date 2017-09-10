@@ -3,7 +3,7 @@ import ava from 'ava'
 
 import {
   Subflow
-} from '../../../src/new/ui/subflow'
+} from './ui'
 
 test('Subflow: create', t => {})
 test('Subflow: getSubflow', t => {})

@@ -3,7 +3,7 @@ import ava from 'ava'
 
 import {
   Workspaces
-} from '../../../src/new/ui/workspaces'
+} from './ui'
 
 test('Workspaces: create', t => {
 
