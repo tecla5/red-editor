@@ -1,4 +1,5 @@
 export {
+  RED,
   Communications,
   Events,
   I18n,

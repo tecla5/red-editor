@@ -38,7 +38,7 @@ export class User extends Context {
                     id: "btn-usermenu",
                     options: []
                 });
-                updateUserMenu();
+                this.updateUserMenu();
             }
         }
 
@@ -195,7 +195,7 @@ export class User extends Context {
         });
     }
 
-    logout() {
+    async logout() {
         var tokens = ctx.settings.get("auth-tokens");
         var token = tokens ? tokens.access_token : "";
         $.ajax({

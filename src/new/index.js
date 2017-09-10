@@ -1,4 +1,9 @@
 export {
+  default as RED
+}
+from './red'
+
+export {
   History
 }
 from './history'
@@ -52,7 +57,6 @@ export {
   Validators
 }
 from './validators'
-
 
 export {
   Actions,
