@@ -28,6 +28,38 @@ export {
 from './text'
 
 export {
+  Communications
+}
+from './comms'
+
+export {
+  Events
+}
+from './events'
+
+export {
+  I18n
+}
+from './i18n'
+export {
+  Main
+}
+from './main'
+export {
+  Settings
+}
+from './settings'
+export {
+  User
+}
+from './user'
+export {
+  Validators
+}
+from './validators'
+
+
+export {
   Actions,
   Clipboard,
   Deploy,

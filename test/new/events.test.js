@@ -1,6 +1,10 @@
 import ava from 'ava'
+import {
+  Events
+} from './api'
 
-test('events: create', t => {
+
+test('Events: create', t => {
 
 })
 

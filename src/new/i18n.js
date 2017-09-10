@@ -14,11 +14,13 @@
  * limitations under the License.
  **/
 
-class I18N {
-    constructor() {}
+class I18n {
+    constructor() {
+        this.i18n = i18n;
+    }
 
     async init() {
-        await i18n.init({
+        await this.i18n.init({
             resGetPath: 'locales/__ns__?lng=__lng__',
             dynamicLoad: false,
             load: 'current',
@@ -29,10 +31,10 @@ class I18N {
             fallbackLng: ['en-US'],
             useCookie: false
         })
-        return i18n.t.apply(null, arguments)
+        return this.i18n.t.apply(null, arguments)
     }
-    async loadCatalog(namespace) {
 
+    async loadCatalog(namespace) {
         var languageList = i18n.functions.toLanguages(i18n.detectLanguage());
         var toLoad = languageList.length;
         return new Promise((resolve, reject) => {

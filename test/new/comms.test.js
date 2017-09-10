@@ -1,6 +1,9 @@
 import ava from 'ava'
+import {
+  Communications
+} from './api'
 
-test('communications: create', t => {
+test('Communications: create', t => {
 
 })
 
