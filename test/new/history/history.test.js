@@ -1,7 +1,8 @@
 import ava from 'ava'
 import {
   History
-} from './api'
+} from '../api'
+
 const ctx = {}
 
 function create(ctx) {

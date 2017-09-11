@@ -1,7 +1,7 @@
 import ava from 'ava'
 import {
   Nodes
-} from './api'
+} from '../api'
 const ctx = {}
 
 function create(ctx) {
