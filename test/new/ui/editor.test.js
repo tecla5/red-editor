@@ -3,10 +3,32 @@ import ava from 'ava'
 import {
   Editor
 } from './ui'
+const ctx = {}
 
-test('Editor: create', t => {})
-test('Editor: getCredentialsURL', t => {})
-test('Editor: validateNode', t => {})
+function create(ctx) {
+  return new Editor(ctx)
+}
+
+test('Editor: create', t => {
+  let editor = create(ctx)
+  t.deepEqual(editor.editStack, [])
+})
+
+test('Editor: getCredentialsURL', t => {
+  let editor = create(ctx)
+  let url = editor.getCredentialsURL('a b', 'x')
+  t.is(url, 'credentials/a-b/x')
+})
+
+test('Editor: validateNode', t => {
+  let editor = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let valid = editor.validateNode(node)
+  t.truthy(valid)
+})
+
 test('Editor: validateNodeProperties', t => {})
 test('Editor: validateNodeProperty', t => {})
 test('Editor: validateNodeEditor', t => {})

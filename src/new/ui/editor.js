@@ -21,13 +21,13 @@ export class Editor extends Context {
     constructor(ctx) {
         super(ctx)
 
-        var editStack = [];
-        var editing_node = null;
-        var editing_config_node = null;
-        var subflowEditor;
-        var expressionTestCache = {};
+        this.editStack = [];
+        this.editing_node = null;
+        this.editing_config_node = null;
+        // subflowEditor;
+        this.expressionTestCache = {};
 
-        var editTrayWidthCache = {};
+        this.editTrayWidthCache = {};
 
         ctx.tray.init();
         ctx.actions.add("core:confirm-edit-tray", function () {

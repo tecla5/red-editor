@@ -56,8 +56,6 @@ test('Diff: createNode', t => {
 })
 test('Diff: createNodeDiffRow', t => {
   let diff = create(ctx)
-  let container = $('#container')
-
   // TODO: real data
   let node = {}
   let stats = {}
@@ -65,13 +63,97 @@ test('Diff: createNodeDiffRow', t => {
 
   // use nightmare
 })
-test('Diff: createNodePropertiesTable', t => {})
-test('Diff: createNodeConflictRadioBoxes', t => {})
-test('Diff: refreshConflictHeader', t => {})
-test('Diff: getRemoteDiff', t => {})
-test('Diff: showRemoteDiff', t => {})
-test('Diff: parseNodes', t => {})
-test('Diff: generateDiff', t => {})
-test('Diff: resolveDiffs', t => {})
-test('Diff: showDiff', t => {})
-test('Diff: mergeDiff', t => {})
+test('Diff: createNodePropertiesTable', t => {
+  let diff = create(ctx)
+  // TODO: real data
+  let node = {}
+  let def = {}
+  let localNodeObj = {}
+  let remoteNodeObj = {}
+  diff.createNodePropertiesTable(def, node, localNodeObj, remoteNodeObj)
+
+  // use nightmare
+})
+
+test('Diff: createNodeConflictRadioBoxes', t => {
+  let diff = create(ctx)
+  // TODO: real data
+  let node = {}
+  let row = {}
+  let localDiv = {}
+  let remoteDiv = {}
+  let propertiesTable = {}
+  let hide = true
+  let state = {}
+  diff.createNodeConflictRadioBoxes(node, row, localDiv, remoteDiv, propertiesTable, hide, state)
+
+  // use nightmare
+})
+
+test('Diff: refreshConflictHeader', t => {
+  let diff = create(ctx)
+  diff.refreshConflictHeader()
+
+  // use nightmare
+})
+
+test('Diff: getRemoteDiff', t => {
+  let diff = create(ctx)
+  let cb = function () {
+    return 'x'
+  }
+  diff.getRemoteDiff(cb)
+  // use nightmare
+})
+
+test('Diff: showRemoteDiff', t => {
+  let diff = create(ctx)
+  let difference = {}
+  diff.showRemoteDiff(difference)
+  // use nightmare
+})
+
+test('Diff: parseNodes', t => {
+  let diff = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let nodeList = [
+    node
+  ]
+  diff.parseNodes(nodeList)
+  // use nightmare
+})
+
+test('Diff: generateDiff', t => {
+  let diff = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let currentNodes = []
+  let newNodes = []
+  diff.generateDiff(currentNodes, newNodes)
+  // use nightmare
+})
+
+test('Diff: resolveDiffs', t => {
+  let diff = create(ctx)
+  let localDiff = {}
+  let remoteDiff = {}
+  diff.resolveDiffs(localDiff, remoteDiff)
+  // use nightmare
+})
+
+test('Diff: showDiff', t => {
+  let diff = create(ctx)
+  let difference = {}
+  diff.showDiff(difference)
+  // use nightmare
+})
+
+test('Diff: mergeDiff', t => {
+  let diff = create(ctx)
+  let difference = {}
+  diff.mergeDiff(difference)
+  // use nightmare
+})

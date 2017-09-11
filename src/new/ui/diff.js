@@ -783,7 +783,7 @@ export class Diff extends Context {
                     localCell.addClass("node-diff-node-conflict");
                     $('<span class="node-diff-status"><i class="fa fa-exclamation"></i></span>').appendTo(localCell);
                 }
-                formatWireProperty(localNode.wires, localNodeObj.all).appendTo(localCell);
+                this.formatWireProperty(localNode.wires, localNodeObj.all).appendTo(localCell);
             } else {
                 localCell.addClass("node-diff-empty");
             }
@@ -800,7 +800,7 @@ export class Diff extends Context {
                         remoteCell.addClass("node-diff-node-conflict");
                         $('<span class="node-diff-status"><i class="fa fa-exclamation"></i></span>').appendTo(remoteCell);
                     }
-                    formatWireProperty(remoteNode.wires, remoteNodeObj.all).appendTo(remoteCell);
+                    this.formatWireProperty(remoteNode.wires, remoteNodeObj.all).appendTo(remoteCell);
                 } else {
                     remoteCell.addClass("node-diff-empty");
                 }
