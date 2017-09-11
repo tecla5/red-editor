@@ -20,7 +20,7 @@ import {
 export class Notifications extends Context {
     constructor() {
         this.currentNotifications = [];
-        var c = 0; // number of notifications made
+        this.c = 0; // number of notifications made
     }
 
     notify(msg, type, fixed, timeout) {

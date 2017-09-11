@@ -334,7 +334,6 @@ export class LibraryUI {
 export class Library extends Context {
     constructor(ctx) {
         super(ctx)
-        this.exportToLibraryDialog = null;
 
         ctx.actions.add("core:library-export", exportFlow);
 
@@ -354,7 +353,7 @@ export class Library extends Context {
             loadFlowLibrary();
         }
 
-        exportToLibraryDialog = $('<div id="library-dialog" class="hide"><form class="dialog-form form-horizontal"></form></div>')
+        this.exportToLibraryDialog = $('<div id="library-dialog" class="hide"><form class="dialog-form form-horizontal"></form></div>')
             .appendTo("body")
             .dialog({
                 modal: true,
@@ -406,7 +405,7 @@ export class Library extends Context {
                 },
                 close: function (e) {}
             });
-        exportToLibraryDialog.children(".dialog-form").append($(
+        this.exportToLibraryDialog.children(".dialog-form").append($(
             '<div class="form-row">' +
             '<label for="node-input-library-filename" data-i18n="[append]editor:library.filename"><i class="fa fa-file"></i> </label>' +
             '<input type="text" id="node-input-library-filename" data-i18n="[placeholder]editor:library.fullFilenamePlaceholder">' +
@@ -505,9 +504,10 @@ export class Library extends Context {
     }
 
     exportFlow() {
+        let ctx = this.ctx
         //TODO: don't rely on the main dialog
         var nns = ctx.nodes.createExportableNodeSet(ctx.view.selection().nodes);
         $("#node-input-library-filename").attr('nodes', JSON.stringify(nns));
-        exportToLibraryDialog.dialog("open");
+        this.exportToLibraryDialog.dialog("open");
     }
 }
