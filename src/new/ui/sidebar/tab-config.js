@@ -19,7 +19,9 @@ import {
 
 export class SidebarTabConfig extends Context {
     constructor(ctx) {
+        let RED = ctx
         var content = document.createElement("div");
+        this.content = content
         content.className = "sidebar-node-config";
 
         $('<div class="button-group sidebar-header">' +
@@ -29,36 +31,36 @@ export class SidebarTabConfig extends Context {
         ).appendTo(content);
 
 
-        var toolbar = $('<div>' +
+        this.toolbar = $('<div>' +
             '<a class="sidebar-footer-button" id="workspace-config-node-collapse-all" href="#"><i class="fa fa-angle-double-up"></i></a> ' +
             '<a class="sidebar-footer-button" id="workspace-config-node-expand-all" href="#"><i class="fa fa-angle-double-down"></i></a>' +
             '</div>');
 
-        var globalCategories = $("<div>").appendTo(content);
-        var flowCategories = $("<div>").appendTo(content);
-        var subflowCategories = $("<div>").appendTo(content);
+        this.globalCategories = $("<div>").appendTo(content);
+        this.flowCategories = $("<div>").appendTo(content);
+        this.subflowCategories = $("<div>").appendTo(content);
 
-        var showUnusedOnly = false;
+        this.showUnusedOnly = false;
 
-        var categories = {};
+        this.categories = {};
 
         RED.sidebar.addTab({
             id: "config",
             label: RED._("sidebar.config.label"),
             name: RED._("sidebar.config.name"),
-            content: content,
-            toolbar: toolbar,
+            content: this.content,
+            toolbar: this.toolbar,
             closeable: true,
             visible: false,
             onchange: function () {
                 refreshConfigNodeList();
             }
         });
-        RED.actions.add("core:show-config-tab", function () {
+        RED.actions.add("core:show-config-tab", () => {
             RED.sidebar.show('config')
         });
 
-        $("#workspace-config-node-collapse-all").on("click", function (e) {
+        $("#workspace-config-node-collapse-all").on("click", (e) => {
             e.preventDefault();
             for (var cat in categories) {
                 if (categories.hasOwnProperty(cat)) {
@@ -66,7 +68,7 @@ export class SidebarTabConfig extends Context {
                 }
             }
         });
-        $("#workspace-config-node-expand-all").on("click", function (e) {
+        $("#workspace-config-node-expand-all").on("click", (e) => {
             e.preventDefault();
             for (var cat in categories) {
                 if (categories.hasOwnProperty(cat)) {
@@ -76,7 +78,7 @@ export class SidebarTabConfig extends Context {
                 }
             }
         });
-        $('#workspace-config-node-filter-all').on("click", function (e) {
+        $('#workspace-config-node-filter-all').on("click", (e) => {
             e.preventDefault();
             if (showUnusedOnly) {
                 $(this).addClass('selected');
@@ -85,7 +87,7 @@ export class SidebarTabConfig extends Context {
                 refreshConfigNodeList();
             }
         });
-        $('#workspace-config-node-filter-unused').on("click", function (e) {
+        $('#workspace-config-node-filter-unused').on("click", (e) => {
             e.preventDefault();
             if (!showUnusedOnly) {
                 $(this).addClass('selected');
@@ -98,6 +100,8 @@ export class SidebarTabConfig extends Context {
 
     getOrCreateCategory(name, parent, label) {
         name = name.replace(/\./i, "-");
+        let categories = this.categories
+
         if (!categories[name]) {
             var container = $('<div class="palette-category workspace-config-node-category" id="workspace-config-node-category-' + name + '"></div>').appendTo(parent);
             var header = $('<div class="workspace-config-node-tray-header palette-header"><i class="fa fa-angle-down expanded"></i></div>').appendTo(container);
@@ -113,10 +117,10 @@ export class SidebarTabConfig extends Context {
             var result = {
                 label: label,
                 list: category,
-                size: function () {
+                size: () => {
                     return result.list.find("li:not(.config_node_none)").length
                 },
-                open: function (snap) {
+                open: (snap) => {
                     if (!icon.hasClass("expanded")) {
                         icon.addClass("expanded");
                         if (snap) {
@@ -126,7 +130,7 @@ export class SidebarTabConfig extends Context {
                         }
                     }
                 },
-                close: function (snap) {
+                close: (snap) => {
                     if (icon.hasClass("expanded")) {
                         icon.removeClass("expanded");
                         if (snap) {
@@ -136,12 +140,12 @@ export class SidebarTabConfig extends Context {
                         }
                     }
                 },
-                isOpen: function () {
+                isOpen: () => {
                     return icon.hasClass("expanded");
                 }
             };
 
-            header.on('click', function (e) {
+            header.on('click', (e) => {
                 if (result.isOpen()) {
                     result.close();
                 } else {
@@ -159,7 +163,10 @@ export class SidebarTabConfig extends Context {
     }
 
     createConfigNodeList(id, nodes) {
-        var category = getOrCreateCategory(id.replace(/\./i, "-"))
+        let RED = this.ctx
+        let showUnusedOnly = this.showUnusedOnly
+
+        var category = this.getOrCreateCategory(id.replace(/\./i, "-"))
         var list = category.list;
 
         nodes.sort(function (A, B) {
@@ -244,21 +251,25 @@ export class SidebarTabConfig extends Context {
     }
 
     refreshConfigNodeList() {
+        let categories = this.categories
+        let globalCategories = this.globalCategories
+        let RED = this.ctx
+
         var validList = {
             "global": true
         };
 
-        getOrCreateCategory("global", globalCategories);
+        this.getOrCreateCategory("global", globalCategories);
 
-        RED.nodes.eachWorkspace(function (ws) {
+        RED.nodes.eachWorkspace((ws) => {
             validList[ws.id.replace(/\./g, "-")] = true;
-            getOrCreateCategory(ws.id, flowCategories, ws.label);
+            this.getOrCreateCategory(ws.id, flowCategories, ws.label);
         })
-        RED.nodes.eachSubflow(function (sf) {
+        RED.nodes.eachSubflow((sf) => {
             validList[sf.id.replace(/\./g, "-")] = true;
-            getOrCreateCategory(sf.id, subflowCategories, sf.name);
+            this.getOrCreateCategory(sf.id, subflowCategories, sf.name);
         })
-        $(".workspace-config-node-category").each(function () {
+        $(".workspace-config-node-category").each(() => {
             var id = $(this).attr('id').substring("workspace-config-node-category-".length);
             if (!validList[id]) {
                 $(this).remove();
@@ -267,7 +278,7 @@ export class SidebarTabConfig extends Context {
         })
         var globalConfigNodes = [];
         var configList = {};
-        RED.nodes.eachConfig(function (cn) {
+        RED.nodes.eachConfig((cn) => {
             if (cn.z) { //} == RED.workspaces.active()) {
                 configList[cn.z.replace(/\./g, "-")] = configList[cn.z.replace(/\./g, "-")] || [];
                 configList[cn.z.replace(/\./g, "-")].push(cn);
@@ -277,13 +288,14 @@ export class SidebarTabConfig extends Context {
         });
         for (var id in validList) {
             if (validList.hasOwnProperty(id)) {
-                createConfigNodeList(id, configList[id] || []);
+                this.createConfigNodeList(id, configList[id] || []);
             }
         }
-        createConfigNodeList('global', globalConfigNodes);
+        this.createConfigNodeList('global', globalConfigNodes);
     }
 
     show(id) {
+        let RED = this.ctx
         if (typeof id === 'boolean') {
             if (id) {
                 $('#workspace-config-node-filter-unused').click();
@@ -291,7 +303,7 @@ export class SidebarTabConfig extends Context {
                 $('#workspace-config-node-filter-all').click();
             }
         }
-        refreshConfigNodeList();
+        this.refreshConfigNodeList();
         if (typeof id === "string") {
             $('#workspace-config-node-filter-all').click();
             id = id.replace(/\./g, "-");

@@ -9,7 +9,6 @@ function create(ctx) {
   return new Sidebar(ctx)
 }
 
-
 test('Sidebar: create', t => {
   let sidebar = create(ctx)
   t.deepEqual(sidebar.sidebarSeparator, {})
