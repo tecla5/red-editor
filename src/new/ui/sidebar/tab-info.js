@@ -20,13 +20,13 @@ import {
 class Tips extends Context {
     constructor(ctx) {
         super(ctx)
-
-        var enabled = true;
-        var startDelay = 1000;
-        var cycleDelay = 15000;
-        var startTimeout;
-        var refreshTimeout;
-        var tipCount = -1;
+        let RED = ctx
+        this.enabled = true;
+        this.startDelay = 1000;
+        this.cycleDelay = 15000;
+        // startTimeout;
+        // refreshTimeout;
+        this.tipCount = -1;
 
         RED.actions.add("core:toggle-show-tips", function (state) {
             if (state === undefined) {
@@ -43,6 +43,7 @@ class Tips extends Context {
     }
 
     setTip() {
+        let RED = this.ctx
         var r = Math.floor(Math.random() * tipCount);
         var tip = RED._("infotips:info.tip" + r);
 
@@ -66,8 +67,8 @@ class Tips extends Context {
     }
 
     cycleTips() {
-        tipBox.fadeOut(300, function () {
-            setTip();
+        tipBox.fadeOut(300, () => {
+            this.setTip();
         })
     }
 
@@ -122,6 +123,8 @@ export class SidebarTabInfo extends Context {
         var nodeSection;
         var infoSection;
         var tipBox;
+
+        // TODO: make into properties (ie. instance vars)
 
         var expandedSections = {
             "property": false
@@ -210,6 +213,7 @@ export class SidebarTabInfo extends Context {
     }
 
     show() {
+        let RED = this.ctx
         RED.sidebar.show("info");
     }
 
@@ -241,6 +245,11 @@ export class SidebarTabInfo extends Context {
     }
 
     refresh(node) {
+        let sections = this.sections
+        let nodeSection = this.nodeSection
+        let infoSection = this.infoSection
+        let RED = this.ctx
+
         sections.show();
         $(nodeSection.content).empty();
         $(infoSection.content).empty();
@@ -366,7 +375,7 @@ export class SidebarTabInfo extends Context {
             infoText = infoText + marked(textInfo);
         }
         if (infoText) {
-            setInfoText(infoText);
+            this.setInfoText(infoText);
         }
 
 
@@ -398,8 +407,7 @@ export class SidebarTabInfo extends Context {
     }
 
     clear() {
-        sections.hide();
-        //
+        this.sections.hide();
     }
 
     set(html) {
