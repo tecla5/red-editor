@@ -6,9 +6,9 @@ export class Diff extends Context {
     constructor(ctx) {
         super(ctx)
 
-        var currentDiff = {};
-        var diffVisible = false;
-        var diffList;
+        this.currentDiff = {};
+        this.diffVisible = false;
+        this.diffList;
 
 
         // ctx.actions.add("core:show-current-diff",showLocalDiff);
@@ -28,7 +28,7 @@ export class Diff extends Context {
         diffList = diffPanel.find("#node-dialog-view-diff-diff").editableList({
             addButton: false,
             scrollOnAdd: false,
-            addItem: function (container, i, object) {
+            addItem: (container, i, object) => {
                 var localDiff = object.diff;
                 var remoteDiff = object.remoteDiff;
                 var tab = object.tab.n;
@@ -58,7 +58,7 @@ export class Diff extends Context {
                     }).appendTo(titleRow);
                 }
                 $('<span class="node-diff-chevron"><i class="fa fa-angle-down"></i></span>').appendTo(originalCell);
-                createNodeIcon(tab, def).appendTo(originalCell);
+                this.createNodeIcon(tab, def).appendTo(originalCell);
                 var tabForLabel = (object.newTab || object.tab).n;
                 var titleSpan = $('<span>', {
                     class: "node-diff-tab-title-meta"
@@ -161,7 +161,7 @@ export class Diff extends Context {
                             $(this).parent().toggleClass('collapsed');
                         });
 
-                        createNodePropertiesTable(def, tab, localTabNode, remoteTabNode, conflicts).appendTo(div);
+                        this.createNodePropertiesTable(def, tab, localTabNode, remoteTabNode, conflicts).appendTo(div);
                         selectState = "";
                         if (conflicts[tab.id]) {
                             flowStats.conflicts++;
@@ -177,31 +177,31 @@ export class Diff extends Context {
                             selectState = currentDiff.resolutions[tab.id];
                         }
                         // Tab properties row
-                        createNodeConflictRadioBoxes(tab, div, localNodeDiv, remoteNodeDiv, true, !conflicts[tab.id], selectState);
+                        this.createNodeConflictRadioBoxes(tab, div, localNodeDiv, remoteNodeDiv, true, !conflicts[tab.id], selectState);
                     }
                 }
                 // var stats = $('<span>',{class:"node-diff-tab-stats"}).appendTo(titleRow);
                 var localNodeCount = 0;
                 var remoteNodeCount = 0;
                 var seen = {};
-                object.tab.nodes.forEach(function (node) {
+                object.tab.nodes.forEach((node) => {
                     seen[node.id] = true;
-                    createNodeDiffRow(node, flowStats).appendTo(nodesDiv)
+                    this.createNodeDiffRow(node, flowStats).appendTo(nodesDiv)
                 });
                 if (object.newTab) {
                     localNodeCount = object.newTab.nodes.length;
-                    object.newTab.nodes.forEach(function (node) {
+                    object.newTab.nodes.forEach((node) => {
                         if (!seen[node.id]) {
                             seen[node.id] = true;
-                            createNodeDiffRow(node, flowStats).appendTo(nodesDiv)
+                            this.createNodeDiffRow(node, flowStats).appendTo(nodesDiv)
                         }
                     });
                 }
                 if (object.remoteTab) {
                     remoteNodeCount = object.remoteTab.nodes.length;
-                    object.remoteTab.nodes.forEach(function (node) {
+                    object.remoteTab.nodes.forEach((node) => {
                         if (!seen[node.id]) {
-                            createNodeDiffRow(node, flowStats).appendTo(nodesDiv)
+                            this.createNodeDiffRow(node, flowStats).appendTo(nodesDiv)
                         }
                     });
                 }
