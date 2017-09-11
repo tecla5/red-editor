@@ -227,7 +227,7 @@ export class Subflow extends Context {
 
     refresh(markChange) {
         var activeSubflow = ctx.nodes.subflow(ctx.workspaces.active());
-        refreshToolbar(activeSubflow);
+        this.refreshToolbar(activeSubflow);
         var subflowInstances = [];
         if (activeSubflow) {
             ctx.nodes.filterNodes({

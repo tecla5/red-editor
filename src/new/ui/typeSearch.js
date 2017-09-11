@@ -7,20 +7,20 @@ export class TypeSearch extends Context {
         super(ctx)
 
         // TODO: properties (ie. this)
-        var shade;
+        // shade;
 
-        var disabled = false;
-        var dialog = null;
-        var searchInput;
-        var searchResults;
-        var searchResultsDiv;
-        var selected = -1;
-        var visible = false;
+        this.disabled = false;
+        this.dialog = null;
+        // searchInput;
+        // searchResults;
+        // searchResultsDiv;
+        this.selected = -1;
+        this.visible = false;
 
-        var activeFilter = "";
-        var addCallback;
+        this.activeFilter = "";
+        this.addCallback;
 
-        var typesUsed = {};
+        this.typesUsed = {};
     }
 
     search(val) {
@@ -35,6 +35,8 @@ export class TypeSearch extends Context {
     }
 
     ensureSelectedIsVisible() {
+        let searchResults = this.searchResults
+
         var selectedEntry = searchResults.find("li.selected");
         if (selectedEntry.length === 1) {
             var scrollWindow = searchResults.parent();
@@ -55,6 +57,8 @@ export class TypeSearch extends Context {
     }
 
     createDialog() {
+        let dialog = this.dialog
+        let searchInput = this.searchInput
         //shade = $('<div>',{class:"red-ui-type-search-shade"}).appendTo("#main-container");
         dialog = $("<div>", {
             id: "red-ui-type-search",

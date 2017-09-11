@@ -20,16 +20,16 @@ import {
 export class Search extends Context {
   constructor(ctx) {
     super(ctx)
-    var disabled = false;
-    var dialog = null;
-    var searchInput;
-    var searchResults;
-    var selected = -1;
-    var visible = false;
+    this.disabled = false;
+    this.dialog = null;
+    // searchInput;
+    // searchResults;
+    this.selected = -1;
+    this.visible = false;
 
-    var index = {};
-    var keys = [];
-    var results = [];
+    this.index = {};
+    this.keys = [];
+    this.results = [];
 
     var disable = () => {
       this.disabled = true;
@@ -53,6 +53,9 @@ export class Search extends Context {
   }
 
   indexNode(n) {
+    let ctx = this.ctx
+    let index = this.index
+
     var l = ctx.utils.getNodeLabel(n);
     if (l) {
       l = ("" + l).toLowerCase();
@@ -85,7 +88,10 @@ export class Search extends Context {
   }
 
   indexWorkspace() {
-    index = {};
+    let ctx = this.ctx
+    let keys = this.keys
+    this.index = {};
+
     ctx.nodes.eachWorkspace(indexNode);
     ctx.nodes.eachSubflow(indexNode);
     ctx.nodes.eachConfig(indexNode);
@@ -100,9 +106,9 @@ export class Search extends Context {
   }
 
   search(val) {
-    searchResults.editableList('empty');
-    selected = -1;
-    results = [];
+    this.searchResults.editableList('empty');
+    this.selected = -1;
+    this.results = [];
     if (val.length > 0) {
       val = val.toLowerCase();
       var i;
@@ -115,8 +121,9 @@ export class Search extends Context {
         if (kpos > -1) {
           for (j = 0; j < index[key].length; j++) {
             var node = index[key][j];
-            nodes[node.node.id] = nodes[node.node.id] = node;
-            nodes[node.node.id].index = Math.min(nodes[node.node.id].index || Infinity, kpos);
+            // fix?
+            var idNode = nodes[node.node.id] = node
+            idNode.index = Math.min(idNode.index || Infinity, kpos);
           }
         }
       }
@@ -126,22 +133,22 @@ export class Search extends Context {
       });
 
       for (i = 0; i < list.length; i++) {
-        results.push(nodes[list[i]]);
+        this.results.push(nodes[list[i]]);
       }
-      if (results.length > 0) {
-        for (i = 0; i < Math.min(results.length, 25); i++) {
-          searchResults.editableList('addItem', results[i])
+      if (this.results.length > 0) {
+        for (i = 0; i < Math.min(this.results.length, 25); i++) {
+          this.searchResults.editableList('addItem', this.results[i])
         }
       } else {
-        searchResults.editableList('addItem', {});
+        this.searchResults.editableList('addItem', {});
       }
     }
   }
 
   ensureSelectedIsVisible() {
-    var selectedEntry = searchResults.find("li.selected");
+    var selectedEntry = this.searchResults.find("li.selected");
     if (selectedEntry.length === 1) {
-      var scrollWindow = searchResults.parent();
+      var scrollWindow = this.searchResults.parent();
       var scrollHeight = scrollWindow.height();
       var scrollOffset = scrollWindow.scrollTop();
       var y = selectedEntry.position().top;
@@ -159,20 +166,22 @@ export class Search extends Context {
   }
 
   createDialog() {
-    dialog = $("<div>", {
+    this.dialog = $("<div>", {
       id: "red-ui-search",
       class: "red-ui-search"
     }).appendTo("#main-container");
     var searchDiv = $("<div>", {
       class: "red-ui-search-container"
     }).appendTo(dialog);
-    searchInput = $('<input type="text" data-i18n="[placeholder]menu.label.searchInput">').appendTo(searchDiv).searchBox({
+
+    this.searchInput = $('<input type="text" data-i18n="[placeholder]menu.label.searchInput">').appendTo(searchDiv).searchBox({
       delay: 200,
       change: function () {
         search($(this).val());
       }
     });
-    searchInput.on('keydown', function (evt) {
+
+    this.searchInput.on('keydown', function (evt) {
       var children;
       if (results.length > 0) {
         if (evt.keyCode === 40) {
@@ -207,12 +216,14 @@ export class Search extends Context {
         }
       }
     });
-    searchInput.i18n();
+
+    this.searchInput.i18n();
 
     var searchResultsDiv = $("<div>", {
       class: "red-ui-search-results-container"
     }).appendTo(dialog);
-    searchResults = $('<ol>', {
+
+    this.searchResults = $('<ol>', {
       id: "search-result-list",
       style: "position: absolute;top: 5px;bottom: 5px;left: 5px;right: 5px;"
     }).appendTo(searchResultsDiv).editableList({
@@ -288,15 +299,15 @@ export class Search extends Context {
 
   reveal(node) {
     this.hide();
-    ctx.view.reveal(node.id);
+    this.ctx.view.reveal(node.id);
   }
 
   show() {
-    if (disabled) {
+    if (this.disabled) {
       return;
     }
-    if (!visible) {
-      ctx.keyboard.add("*", "escape", function () {
+    if (!this.visible) {
+      this.ctx.keyboard.add("*", "escape", function () {
         hide()
       });
       $("#header-shade").show();
@@ -308,28 +319,28 @@ export class Search extends Context {
       if (dialog === null) {
         createDialog();
       }
-      dialog.slideDown(300);
-      ctx.events.emit("search:open");
-      visible = true;
+      this.dialog.slideDown(300);
+      this.ctx.events.emit("search:open");
+      this.visible = true;
     }
-    searchInput.focus();
+    this.searchInput.focus();
   }
 
   hide() {
-    if (visible) {
-      ctx.keyboard.remove("escape");
-      visible = false;
+    if (this.visible) {
+      this.ctx.keyboard.remove("escape");
+      this.visible = false;
       $("#header-shade").hide();
       $("#editor-shade").hide();
       $("#palette-shade").hide();
       $("#sidebar-shade").hide();
       $("#sidebar-separator").show();
-      if (dialog !== null) {
-        dialog.slideUp(200, function () {
-          searchInput.searchBox('value', '');
+      if (this.dialog !== null) {
+        this.dialog.slideUp(200, () => {
+          this.searchInput.searchBox('value', '');
         });
       }
-      ctx.events.emit("search:close");
+      this.ctx.events.emit("search:close");
     }
   }
 

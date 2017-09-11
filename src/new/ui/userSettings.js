@@ -73,6 +73,12 @@ class UserSettings extends Context {
 
     constructor(ctx) {
         super(ctx)
+        this.viewSettings = {}
+        let viewSettings = this.viewSettings
+
+        this.allSettings = {}
+        let allSettings = this.allSettings
+        let RED = ctx
 
         RED.actions.add("core:show-user-settings", show);
         RED.actions.add("core:show-help", function () {
@@ -83,9 +89,9 @@ class UserSettings extends Context {
             id: 'view',
             title: RED._("menu.label.view.view"),
             get: this.createViewPane,
-            close: function () {
-                viewSettings.forEach(function (section) {
-                    section.options.forEach(function (opt) {
+            close: () => {
+                viewSettings.forEach((section) => {
+                    section.options.forEach((opt) => {
                         var input = $("#user-settings-" + opt.setting);
                         if (opt.toggle) {
                             setSelected(opt.setting, input.prop('checked'));
@@ -97,8 +103,8 @@ class UserSettings extends Context {
             }
         })
 
-        viewSettings.forEach(function (section) {
-            section.options.forEach(function (opt) {
+        viewSettings.forEach((section) => {
+            section.options.forEach((opt) => {
                 if (opt.oldSetting) {
                     var oldValue = RED.settings.get(opt.oldSetting);
                     if (oldValue !== undefined && oldValue !== null) {
@@ -132,14 +138,14 @@ class UserSettings extends Context {
 
 
     addPane(options) {
-        panes.push(options);
+        this.panes.push(options);
     }
 
     show(initialTab) {
-        if (settingsVisible) {
+        if (this.settingsVisible) {
             return;
         }
-        settingsVisible = true;
+        this.settingsVisible = true;
         var tabContainer;
 
         var trayOptions = {

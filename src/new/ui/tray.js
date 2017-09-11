@@ -20,11 +20,9 @@ import {
 export class Tray extends Context {
     constructor(ctx) {
         super(ctx)
-        // TODO: properties (ie. this)
-
-        var stack = [];
-        var editorStack = $("#editor-stack");
-        var openingTray = false;
+        this.stack = [];
+        this.editorStack = $("#editor-stack");
+        this.openingTray = false;
 
         $(window).resize(handleWindowResize);
         RED.events.on("sidebar:resize", handleWindowResize);
@@ -40,7 +38,7 @@ export class Tray extends Context {
 
     show(options) {
         if (stack.length > 0) {
-            var oldTray = stack[stack.length - 1];
+            var oldTray = this.stack[stack.length - 1];
             oldTray.tray.css({
                 right: -(oldTray.tray.width() + 10) + "px"
             });
@@ -50,12 +48,13 @@ export class Tray extends Context {
             }, 250)
         } else {
             RED.events.emit("editor:open");
-            showTray(options);
+            this.showTray(options);
         }
 
     }
 
     async close() {
+        let stack = this.stack
         if (stack.length > 0) {
             var tray = stack.pop();
             tray.tray.css({
@@ -151,7 +150,7 @@ export class Tray extends Context {
             options: options,
             primaryButton: primaryButton
         };
-        stack.push(tray);
+        this.stack.push(tray);
 
         if (!options.maximized) {
             el.draggable({
@@ -265,6 +264,7 @@ export class Tray extends Context {
     }
 
     handleWindowResize() {
+        let stack = this.stack
         if (stack.length > 0) {
             var tray = stack[stack.length - 1];
             var trayHeight = tray.tray.height() - tray.header.outerHeight() - tray.footer.outerHeight();

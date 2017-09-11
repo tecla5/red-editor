@@ -27,6 +27,9 @@ export class WorkSpaces extends Context {
         this.workspaceIndex = 0;
         this.workspace_tabs = null; // instances of WorkspaceTab
 
+        let workspace_tabs = this.workspace_tabs
+        let activeWorkspace = this.activeWorkspace
+
         this.createWorkspaceTabs();
         RED.events.on("sidebar:resize", workspace_tabs.resize);
 
@@ -48,6 +51,7 @@ export class WorkSpaces extends Context {
     }
 
     addWorkspace(ws, skipHistoryEntry) {
+        let workspace_tabs = this.workspace_tabs
         if (ws) {
             workspace_tabs.addTab(ws);
             workspace_tabs.resize();
@@ -85,6 +89,7 @@ export class WorkSpaces extends Context {
     }
 
     deleteWorkspace(ws) {
+        let workspace_tabs = this.workspace_tabs
         if (workspace_tabs.count() == 1) {
             return;
         }
@@ -99,6 +104,7 @@ export class WorkSpaces extends Context {
     }
 
     showRenameWorkspaceDialog(id) {
+        let workspace_tabs = this.workspace_tabs
         var workspace = RED.nodes.workspace(id);
         RED.view.state(RED.state.EDITING);
         var tabflowEditor;
@@ -126,7 +132,7 @@ export class WorkSpaces extends Context {
                     id: "node-dialog-ok",
                     class: "primary",
                     text: RED._("common.label.done"),
-                    click: function () {
+                    click: () => {
                         var label = $("#node-input-name").val();
                         var changed = false;
                         var changes = {};
@@ -134,7 +140,7 @@ export class WorkSpaces extends Context {
                             changes.label = workspace.label;
                             changed = true;
                             workspace.label = label;
-                            workspace_tabs.renameTab(workspace.id, label);
+                            this.workspace_tabs.renameTab(workspace.id, label);
                         }
                         var disabled = $("#node-input-disabled").prop("checked");
                         if (workspace.disabled !== disabled) {
@@ -259,8 +265,9 @@ export class WorkSpaces extends Context {
 
 
     createWorkspaceTabs() {
+        let workspace_tabs = this.workspace_tabs
         // see ui/common/tabs
-        this.workspace_tabs = RED.tabs.create({
+        workspace_tabs = RED.tabs.create({
             id: "workspace-tabs",
             onchange: function (tab) {
                 var event = {
@@ -316,6 +323,7 @@ export class WorkSpaces extends Context {
     }
 
     removeWorkspace(ws) {
+        let workspace_tabs = this.workspace_tabs
         if (!ws) {
             this.deleteWorkspace(RED.nodes.workspace(activeWorkspace));
         } else {
@@ -326,6 +334,7 @@ export class WorkSpaces extends Context {
     }
 
     setWorkspaceOrder(order) {
+        let workspace_tabs = this.workspace_tabs
         RED.nodes.setWorkspaceOrder(order.filter(function (id) {
             return RED.nodes.workspace(id) !== undefined;
         }));
@@ -333,15 +342,19 @@ export class WorkSpaces extends Context {
     }
 
     contains(id) {
-        return workspace_tabs.contains(id);
+        return this.workspace_tabs.contains(id);
     }
+
     count() {
-        return workspace_tabs.count();
+        return this.workspace_tabs.count();
     }
+
     active() {
-        return activeWorkspace
+        return this.activeWorkspace
     }
+
     show(id) {
+        let workspace_tabs = this.workspace_tabs
         if (!workspace_tabs.contains(id)) {
             var sf = RED.nodes.subflow(id);
             if (sf) {
@@ -358,7 +371,9 @@ export class WorkSpaces extends Context {
         }
         workspace_tabs.activateTab(id);
     }
+
     refresh() {
+        let workspace_tabs = this.workspace_tabs
         RED.nodes.eachWorkspace(function (ws) {
             workspace_tabs.renameTab(ws.id, ws.label);
 
@@ -370,7 +385,8 @@ export class WorkSpaces extends Context {
         });
         RED.sidebar.config.refresh();
     }
+
     resize() {
-        workspace_tabs.resize();
+        this.workspace_tabs.resize();
     }
 }
