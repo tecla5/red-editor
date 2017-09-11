@@ -131,13 +131,33 @@ test('registry: disableNodeSet', t => {
 })
 
 test('registry: registerNodeType', t => {
+  let registry = create(ctx)
+  let nt = 'io'
+  let def = {
+    id: 'x'
+  }
   registry.registerNodeType(nt, def)
+  t.is(registry.nodeDefinitions[nt], def)
 })
 
 test('registry: removeNodeType', t => {
+  let registry = create(ctx)
+  let nt = 'io'
+  let def = {
+    id: 'x'
+  }
+  registry.registerNodeType(nt, def)
   registry.removeNodeType(nt)
+  t.falsy(registry.nodeDefinitions[nt])
 })
 
 test('registry: getNodeType', t => {
-  registry.getNodeType(nt)
+  let registry = create(ctx)
+  let nt = 'io'
+  let def = {
+    id: 'x'
+  }
+  registry.registerNodeType(nt, def)
+  let node = registry.getNodeType(nt)
+  t.is(node, def)
 })

@@ -9,20 +9,20 @@ export class Actions extends Context {
     }
 
     addAction(name, handler) {
-        actions[name] = handler;
+        this.actions[name] = handler;
     }
 
     removeAction(name) {
-        delete actions[name];
+        delete this.actions[name];
     }
 
     getAction(name) {
-        return actions[name];
+        return this.actions[name];
     }
 
     invokeAction(name) {
-        if (actions.hasOwnProperty(name)) {
-            actions[name]();
+        if (this.actions.hasOwnProperty(name)) {
+            this.actions[name]();
         }
     }
 
@@ -30,7 +30,7 @@ export class Actions extends Context {
         var RED = this.ctx;
 
         var result = [];
-        Object.keys(actions).forEach(function (action) {
+        Object.keys(this.actions).forEach((action) => {
             var shortcut = RED.keyboard.getShortcut(action);
             result.push({
                 id: action,

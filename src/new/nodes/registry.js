@@ -120,7 +120,7 @@ export class NodesRegistry extends Context {
   }
 
   registerNodeType(nt, def) {
-    nodeDefinitions[nt] = def;
+    this.nodeDefinitions[nt] = def;
     def.type = nt;
     if (def.category != "subflows") {
       def.set = this.nodeSets[typeToId[nt]];
