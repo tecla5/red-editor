@@ -21,19 +21,21 @@ export class Communications extends Context {
     constructor(ctx) {
         super(ctx)
 
-        var errornotification = null;
-        var clearErrorTimer = null;
-        var connectCountdownTimer = null;
-        var connectCountdown = 10;
-        var subscriptions = {};
-        var ws;
-        var pendingAuth = false;
-        var reconnectAttempts = 0;
-        var active = false;
+        this.errornotification = null;
+        this.clearErrorTimer = null;
+        this.connectCountdownTimer = null;
+        this.connectCountdown = 10;
+        this.subscriptions = {};
+        // ws;
+        this.pendingAuth = false;
+        this.reconnectAttempts = 0;
+        this.active = false;
     }
 
     connect() {
-        active = true;
+        this.active = true;
+        let location = this.location // fix
+
         var path = location.hostname;
         var port = location.port;
         if (port.length !== 0) {
@@ -46,6 +48,8 @@ export class Communications extends Context {
         var auth_tokens = RED.settings.get("auth-tokens");
         pendingAuth = (auth_tokens != null);
 
+        let subscriptions = this.subscriptions
+
         function completeConnection() {
             for (var t in subscriptions) {
                 if (subscriptions.hasOwnProperty(t)) {
@@ -55,7 +59,7 @@ export class Communications extends Context {
                 }
             }
         }
-
+        let ws = this.ws
         ws = new WebSocket(path);
         ws.onopen = function () {
             reconnectAttempts = 0;
@@ -147,10 +151,11 @@ export class Communications extends Context {
     }
 
     subscribe(topic, callback) {
-        if (subscriptions[topic] == null) {
-            subscriptions[topic] = [];
+        let subscription = this.subscriptions[topic]
+        if (subscription === null) {
+            subscription = [];
         }
-        subscriptions[topic].push(callback);
+        subscription.push(callback);
         if (ws && ws.readyState == 1) {
             ws.send(JSON.stringify({
                 subscribe: topic
@@ -159,14 +164,15 @@ export class Communications extends Context {
     }
 
     unsubscribe(topic, callback) {
-        if (subscriptions[topic]) {
-            for (var i = 0; i < subscriptions[topic].length; i++) {
-                if (subscriptions[topic][i] === callback) {
-                    subscriptions[topic].splice(i, 1);
+        let subscription = this.subscriptions[topic]
+        if (subscription) {
+            for (var i = 0; i < subscription.length; i++) {
+                if (subscription[i] === callback) {
+                    subscription.splice(i, 1);
                     break;
                 }
             }
-            if (subscriptions[topic].length === 0) {
+            if (subscription.length === 0) {
                 delete subscriptions[topic];
             }
         }
