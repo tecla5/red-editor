@@ -18,11 +18,15 @@ import {
     createUndoEvent
 } from './undo'
 
-export class History {
+import {
+    Context
+} from '../context'
+
+export class History extends Context {
     constructor(ctx) {
-        this.ctx = ctx;
+        super(ctx)
         this.undo_history = [];
-        this.undoEvent = createUndoEvent(ctx).bind(this)
+        this.undoEvent = this.createUndoEvent(ctx).bind(this)
     }
 
     //TODO: this function is a placeholder until there is a 'save' event that can be listened to
@@ -33,23 +37,24 @@ export class History {
     }
 
     list() {
-        return undo_history
+        return this.undo_history
     }
 
     depth() {
-        return undo_history.length;
+        return this.undo_history.length;
     }
 
     push(ev) {
-        undo_history.push(ev);
+        this.undo_history.push(ev);
     }
 
     pop() {
-        var ev = undo_history.pop();
+        var ev = this.undo_history.pop();
         this.undoEvent(ev);
     }
 
     peek() {
-        return undo_history[undo_history.length - 1];
+        let last = this.undo_history.length - 1
+        return this.undo_history[last];
     }
 }

@@ -138,53 +138,185 @@ test('nodes: subflowContains', t => {
 })
 
 test('nodes: getAllFlowNodes', t => {
+  let nodes = create(ctx)
 
+  // todo: add flow nodes
+
+  let flowNodes = nodes.getAllFlowNodes(node)
+  t.truthy(flowNodes)
 })
+
+// TODO: test conversion
 test('nodes: convertWorkspace', t => {
-
+  let nodes = create(ctx)
+  let node = {
+    id: 'a'
+  }
+  let convertedNode = nodes.convertWorkspace(node)
+  t.truthy(convertedNode)
 })
+
+// TODO: test conversion
 test('nodes: convertNode', t => {
-
+  let nodes = create(ctx)
+  let node = {
+    id: 'a'
+  }
+  let exportCreds = false
+  let convertedNode = nodes.convertNode(node, exportCreds)
+  t.truthy(convertedNode)
 })
+
+// TODO: test conversion
 test('nodes: convertSubflow', t => {
-
+  let nodes = create(ctx)
+  let node = {
+    id: 'a'
+  }
+  let convertedNode = nodes.convertSubflow(node)
+  t.truthy(convertedNode)
 })
+
 test('nodes: createExportableNodeSet', t => {
+  let nodes = create(ctx)
+  let node = {
+    id: 'a'
+  }
+  // TODO: test real data
+  let set = [node]
+  let exportedSubflows = {}
+  let exportedConfigNodes = {}
 
+  let convertedSet = nodes.createExportableNodeSet(set, exportedSubflows, exportedConfigNodes)
+  t.truthy(convertedSet)
 })
+
 test('nodes: createExportableNodeSet', t => {
-
+  let nodes = create(ctx)
+  let exportCredentials = {}
+  let set = nodes.createCompleteNodeSet(exportCredentials)
+  t.truthy(set)
 })
+
 test('nodes: checkForMatchingSubflow', t => {
-
+  let nodes = create(ctx)
+  let node = {
+    id: 'a'
+  }
+  let subflow = {}
+  let subflowNodes = [node]
+  let set = nodes.checkForMatchingSubflow(subflow, subflowNodes)
+  t.truthy(set)
 })
+
 test('nodes: compareNodes', t => {
+  let nodes = create(ctx)
+  let nodeA = {
+    id: 'a'
+  }
+  let nodeB = {
+    id: 'b'
+  }
+  let idMustMatch = true
+  let result = nodes.compareNodes(nodeA, nodeB, idMustMatch)
+  t.falsy(result)
 
+  result = nodes.compareNodes(nodeA, nodeA, false)
+  t.truthy(result)
 })
+
 test('nodes: importNodes', t => {
+  let nodes = create(ctx)
+  let newNodesObj = {
+    id: 'a'
+  }
+  let createMissingWorkspace = true
+  let createNewIds = true
+  let result = nodes.importNodes(newNodesObj, createNewIds, createMissingWorkspace)
+  // return [new_nodes, new_links, new_workspaces, new_subflows, missingWorkspace];
 
+  // TODO: test result...
+  t.is(result[0], newNodesObj)
 })
+
 test('nodes: filterNodes', t => {
-
+  let nodes = create(ctx)
+  let filter = {
+    type: 'x'
+  }
+  let nodeA = {
+    id: 'a',
+    type: 'x'
+  }
+  let nodeB = {
+    id: 'b'
+  }
+  nodes.addNode(nodeA)
+  nodes.addNode(nodeB)
+  let filtered = nodes.filterNodes(filter)
+  t.is(filtered.length, 1)
+  t.is(filtered[0], nodeA)
 })
+
 test('nodes: filterLinks', t => {
+  let nodes = create(ctx)
+  let filter = {
+    type: 'x'
+  }
+  let linkA = {
+    type: 'x'
+  }
+  let linkB = {
+    type: 'y'
+  }
 
+  nodes.addLink()
+  let filtered = nodes.filterLinks(filter)
+  t.is(filtered.length, 1)
+  t.is(filtered[0], linkA)
 })
+
 test('nodes: updateConfigNodeUsers', t => {
-
+  let nodes = create(ctx)
+  let node = {
+    id: 'a',
+    type: 'x'
+  }
+  nodes.updateConfigNodeUsers(node)
+  let user = nodes.configNodes.users[0]
+  let expectedUser = {}
+  t.deepEqual(user, expectedUser)
 })
+
 test('nodes: flowVersion', t => {
-
+  let nodes = create(ctx)
+  let version = nodes.flowVersion()
+  t.is(version, '1')
 })
+
 test('nodes: clear', t => {
-
+  let nodes = create(ctx)
+  nodes.clear()
+  t.deepEqual(nodes.nodes, [])
+  t.deepEqual(nodes.links, [])
 })
+
 test('nodes: getWorkspaceOrder', t => {
+  let nodes = create(ctx)
 
+  let expected = nodes.workspacesOrder
+  let order = nodes.getWorkspaceOrder()
+  t.is(order, expected)
 })
+
 test('nodes: setWorkspaceOrder', t => {
+  let nodes = create(ctx)
 
+  let expected = 2
+  let order = nodes.setWorkspaceOrder(expected)
+  t.is(order, expected)
 })
+
 test('nodes: eachNode', t => {
 
 })

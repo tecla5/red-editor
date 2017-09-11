@@ -1159,8 +1159,8 @@ export class Nodes {
     filterLinks(filter) {
         var result = [];
 
-        for (var n = 0; n < links.length; n++) {
-            var link = links[n];
+        for (var n = 0; n < this.links.length; n++) {
+            var link = this.links[n];
             if (filter.source) {
                 if (filter.source.hasOwnProperty("id") && link.source.id !== filter.source.id) {
                     continue;
@@ -1193,7 +1193,7 @@ export class Nodes {
                 if (property.type) {
                     var type = registry.getNodeType(property.type);
                     if (type && type.category == "config") {
-                        var configNode = configNodes[n[d]];
+                        var configNode = this.configNodes[n[d]];
                         if (configNode) {
                             if (configNode.users.indexOf(n) === -1) {
                                 configNode.users.push(n);
@@ -1207,26 +1207,27 @@ export class Nodes {
 
     flowVersion(version) {
         if (version !== undefined) {
-            loadedFlowVersion = version;
+            this.loadedFlowVersion = version;
         } else {
-            return loadedFlowVersion;
+            return this.loadedFlowVersion;
         }
     }
 
     clear() {
-        nodes = [];
-        links = [];
-        configNodes = {};
-        workspacesOrder = [];
-        var subflowIds = Object.keys(subflows);
-        subflowIds.forEach(function (id) {
+        this.nodes = [];
+        this.links = [];
+        this.configNodes = {};
+        this.workspacesOrder = [];
+        var subflowIds = Object.keys(this.subflows);
+        subflowIds.forEach((id) => {
             RED.subflow.removeSubflow(id)
         });
-        var workspaceIds = Object.keys(workspaces);
-        workspaceIds.forEach(function (id) {
-            RED.workspaces.remove(workspaces[id]);
+        var workspaceIds = Object.keys(this.workspaces);
+        this.workspaceIds.forEach((id) => {
+            RED.workspaces.remove(this.workspaces[id]);
         });
-        defaultWorkspace = null;
+
+        this.defaultWorkspace = null;
 
         RED.nodes.dirty(true);
         RED.view.redraw(true);
