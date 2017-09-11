@@ -30,14 +30,12 @@ export class Sidebar extends Context {
     constructor(ctx) {
         super(ctx)
 
-        var sidebarSeparator = {};
-        var knownTabs = {
-
-        };
+        this.sidebarSeparator = {};
+        this.knownTabs = {};
         //$('#sidebar').tabs();
-        var sidebar_tabs = ctx.tabs.create({
+        this.sidebar_tabs = ctx.tabs.create({
             id: "sidebar-tabs",
-            onchange: function (tab) {
+            onchange: (tab) => {
                 $("#sidebar-content").children().hide();
                 $("#sidebar-footer").children().hide();
                 if (tab.onchange) {
@@ -48,7 +46,7 @@ export class Sidebar extends Context {
                     $(tab.toolbar).show();
                 }
             },
-            onremove: function (tab) {
+            onremove: (tab) => {
                 $(tab.wrapper).hide();
                 if (tab.onremove) {
                     tab.onremove.call(tab);
@@ -56,9 +54,10 @@ export class Sidebar extends Context {
             },
             minimumActiveTabWidth: 110
         });
+
         $("#sidebar-separator").draggable({
             axis: "x",
-            start: function (event, ui) {
+            start: (event, ui) => {
                 sidebarSeparator.closing = false;
                 sidebarSeparator.opening = false;
                 var winWidth = $(window).width();
@@ -78,7 +77,7 @@ export class Sidebar extends Context {
                 }
                 sidebarSeparator.width = $("#sidebar").width();
             },
-            drag: function (event, ui) {
+            drag: (event, ui) => {
                 var d = ui.position.left - sidebarSeparator.start;
                 var newSidebarWidth = sidebarSeparator.width - d;
                 if (sidebarSeparator.opening) {
@@ -113,10 +112,10 @@ export class Sidebar extends Context {
                 $("#editor-stack").css("right", newChartRight + 1);
                 $("#sidebar").width(newSidebarWidth);
 
-                sidebar_tabs.resize();
+                this.sidebar_tabs.resize();
                 ctx.events.emit("sidebar:resize");
             },
-            stop: function (event, ui) {
+            stop: (event, ui) => {
                 if (sidebarSeparator.closing) {
                     $("#sidebar").removeClass("closing");
                     ctx.menu.setSelected("menu-item-sidebar", false);
@@ -132,7 +131,7 @@ export class Sidebar extends Context {
             }
         });
 
-        ctx.actions.add("core:toggle-sidebar", function (state) {
+        ctx.actions.add("core:toggle-sidebar", (state) => {
             if (state === undefined) {
                 ctx.menu.toggleSelected("menu-item-sidebar");
             } else {
@@ -150,6 +149,10 @@ export class Sidebar extends Context {
     }
 
     addTab(title, content, closeable, visible) {
+        let sidebar_tabs = this.sidebar_tabs
+        let knownTabs = this.knownTabs
+        let ctx = this.ctx
+
         var options;
         if (typeof title === "string") {
             // TODO: legacy support in case anyone uses this...
@@ -186,8 +189,8 @@ export class Sidebar extends Context {
         ctx.menu.addItem("menu-item-view-menu", {
             id: "menu-item-view-menu-" + options.id,
             label: options.name,
-            onselect: function () {
-                showSidebar(options.id);
+            onselect: () => {
+                this.showSidebar(options.id);
             },
             group: "sidebar-tabs"
         });
@@ -200,6 +203,10 @@ export class Sidebar extends Context {
     }
 
     removeTab(id) {
+        let ctx = this.ctx
+        let sidebar_tabs = this.sidebar_tabs
+        let knownTabs = this.knownTabs
+
         sidebar_tabs.removeTab(id);
         $(knownTabs[id].wrapper).remove();
         if (knownTabs[id].footer) {
@@ -209,8 +216,10 @@ export class Sidebar extends Context {
         ctx.menu.removeItem("menu-item-view-menu-" + id);
     }
 
-
     toggleSidebar(state) {
+        let sidebar_tabs = this.sidebar_tabs
+        let ctx = this.ctx
+
         if (!state) {
             $("#main-container").addClass("sidebar-closed");
         } else {
@@ -221,6 +230,8 @@ export class Sidebar extends Context {
     }
 
     showSidebar(id) {
+        let sidebar_tabs = this.sidebar_tabs
+        let ctx = this.ctx
         if (id) {
             if (!containsTab(id)) {
                 sidebar_tabs.addTab(knownTabs[id]);
@@ -233,6 +244,7 @@ export class Sidebar extends Context {
     }
 
     containsTab(id) {
+        let sidebar_tabs = this.sidebar_tabs
         return sidebar_tabs.contains(id);
     }
 }
