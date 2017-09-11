@@ -29,15 +29,109 @@ test('Editor: validateNode', t => {
   t.truthy(valid)
 })
 
-test('Editor: validateNodeProperties', t => {})
-test('Editor: validateNodeProperty', t => {})
-test('Editor: validateNodeEditor', t => {})
-test('Editor: validateNodeEditorProperty', t => {})
-test('Editor: updateNodeProperties', t => {})
-test('Editor: prepareConfigNodeSelect', t => {})
-test('Editor: prepareConfigNodeButton', t => {})
-test('Editor: preparePropertyEditor', t => {})
-test('Editor: attachPropertyChangeHandler', t => {})
+test('Editor: validateNodeProperties', t => {
+  let editor = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let definition = {}
+  let properties = {}
+  let valid = editor.validateNodeProperties(node, definition, properties)
+  t.truthy(valid)
+})
+
+test('Editor: validateNodeProperty', t => {
+  let editor = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let definition = {}
+  let properties = {}
+  let value = 'a'
+  let valid = editor.validateNodeProperty(node, definition, property, value)
+  t.truthy(valid)
+})
+
+test('Editor: validateNodeEditor', t => {
+  let editor = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let prefix = 'a'
+  let valid = editor.validateNodeEditor(node, prefix)
+  t.truthy(valid)
+})
+
+test('Editor: validateNodeEditorProperty', t => {
+  let editor = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let defaults = {}
+  let property = {}
+  let prefix = 'a'
+  let valid = editor.validateNodeEditorProperty(node, defaults, property, prefix)
+  t.truthy(valid)
+})
+
+test('Editor: updateNodeProperties', t => {
+  let editor = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let output = {}
+  let removedLinks = editor.updateNodeProperties(node, outputMap)
+  t.truthy(removedLinks)
+})
+
+test('Editor: prepareConfigNodeSelect', t => {
+  let editor = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let type = 'io'
+  let property = {}
+  let prefix = 'a'
+  let prepared = editor.prepareConfigNodeSelect(node, property, type, prefix)
+  t.truthy(prepared)
+})
+
+test('Editor: prepareConfigNodeButton', t => {
+  let editor = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let type = 'io'
+  let property = {}
+  let prefix = 'a'
+  let prepared = editor.prepareConfigNodeButton(node, property, type, prefix)
+  t.truthy(prepared)
+})
+
+test('Editor: preparePropertyEditor', t => {
+  let editor = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let definition = {}
+  let property = {}
+  let prefix = 'a'
+  let prepared = editor.preparePropertyEditor(node, property, prefix, definition)
+  t.truthy(prepared)
+})
+
+test('Editor: attachPropertyChangeHandler', t => {
+  let editor = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let definition = {}
+  let property = {}
+  let prefix = 'a'
+  let prepared = editor.attachPropertyChangeHandler(node, definition, property, prefix)
+  t.truthy(prepared)
+})
+
 test('Editor: populateCredentialsInputs', t => {})
 test('Editor: updateNodeCredentials', t => {})
 
