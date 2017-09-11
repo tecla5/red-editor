@@ -37,16 +37,107 @@ test('registry: getModule', t => {
   t.is(registered, module)
 })
 
-test('registry: getNodeSetForType', t => {})
-test('registry: getModuleList', t => {})
-test('registry: getNodeList', t => {})
-test('registry: getNodeTypes', t => {})
-test('registry: setNodeList', t => {})
-test('registry: removeNodeSet', t => {})
-test('registry: addNodeSet', t => {})
-test('registry: getNodeSet', t => {})
-test('registry: enableNodeSet', t => {})
-test('registry: disableNodeSet', t => {})
-test('registry: registerNodeType', t => {})
-test('registry: removeNodeType', t => {})
-test('registry: getNodeType', t => {})
+test('registry: getNodeSetForType', t => {
+  let registry = create(ctx)
+  let nodeType = 'io'
+  registry.getNodeSetForType(nodeType)
+
+})
+
+test('registry: getModuleList', t => {
+  let registry = create(ctx)
+  registry.getModuleList()
+
+})
+
+test('registry: getNodeList', t => {
+  let registry = create(ctx)
+  registry.getNodeList()
+})
+
+test('registry: getNodeTypes', t => {
+  let registry = create(ctx)
+  registry.getNodeTypes()
+})
+
+test('registry: setNodeList', t => {
+  let registry = create(ctx)
+  registry.setNodeList(list)
+})
+
+test('registry: removeNodeSet', t => {
+  let registry = create(ctx)
+  registry.removeNodeSet(id)
+})
+
+test('registry: addNodeSet', t => {
+  let registry = create(ctx)
+  let module = {
+    id: 'x'
+  }
+  let ns = {
+    id: 'a',
+    module
+  }
+  registry.addNodeSet(ns)
+  let set = registry.getNodeSet(ns.id)
+  t.is(set, ns)
+})
+
+test('registry: getNodeSet', t => {
+  let registry = create(ctx)
+  let module = {
+    id: 'x'
+  }
+  let ns = {
+    id: 'a',
+    module
+  }
+  registry.addNodeSet(ns)
+  let set = registry.getNodeSet(ns.id)
+  t.is(set, ns)
+})
+
+test('registry: enableNodeSet', t => {
+  let registry = create(ctx)
+  let module = {
+    id: 'x'
+  }
+  let ns = {
+    id: 'a',
+    module
+  }
+  registry.addNodeSet(ns)
+  registry.enableNodeSet(ns.id)
+  let set = registry.getNodeSet(ns.id)
+  t.truthy(set.enabled)
+})
+
+test('registry: disableNodeSet', t => {
+  let registry = create(ctx)
+  let module = {
+    id: 'x'
+  }
+  let ns = {
+    id: 'a',
+    module
+  }
+  registry.addNodeSet(ns)
+  registry.enableNodeSet(ns.id)
+  let set = registry.getNodeSet(ns.id)
+  t.truthy(set.enabled)
+  registry.disableNodeSet(ns.id)
+  t.falsy(set.enabled)
+})
+
+test('registry: registerNodeType', t => {
+  registry.registerNodeType(nt, def)
+})
+
+test('registry: removeNodeType', t => {
+  registry.removeNodeType(nt)
+})
+
+test('registry: getNodeType', t => {
+  registry.getNodeType(nt)
+})
