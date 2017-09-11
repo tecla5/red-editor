@@ -411,9 +411,9 @@ export class Editor extends Context {
                         $('#' + prefix + '-' + cred).val('');
                     }
                 } else {
-                    preparePropertyEditor(credData, cred, prefix, credDef);
+                    this.preparePropertyEditor(credData, cred, prefix, credDef);
                 }
-                attachPropertyChangeHandler(node, credDef, cred, prefix);
+                this.attachPropertyChangeHandler(node, credDef, cred, prefix);
             }
         }
     }

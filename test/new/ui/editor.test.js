@@ -132,24 +132,165 @@ test('Editor: attachPropertyChangeHandler', t => {
   t.truthy(prepared)
 })
 
-test('Editor: populateCredentialsInputs', t => {})
-test('Editor: updateNodeCredentials', t => {})
+test('Editor: populateCredentialsInputs', t => {
+  let editor = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let credDef = {}
+  let credData = {}
+  let prefix = 'a'
+  editor.populateCredentialsInputs(node, credDef, credData, prefix)
 
-test('Editor: prepareEditDialog', t => {})
-test('Editor: getEditStackTitle', t => {})
-test('Editor: buildEditForm', t => {})
-test('Editor: refreshLabelForm', t => {})
-test('Editor: buildLabelRow', t => {})
-test('Editor: buildLabelForm', t => {})
+  // use nightmare
+})
 
-test('Editor: showEditDialog', t => {})
-test('Editor: showEditConfigNodeDialog', t => {})
-test('Editor: defaultConfigNodeSort', t => {})
-test('Editor: updateConfigNodeSelect', t => {})
-test('Editor: showEditSubflowDialog', t => {})
-test('Editor: editExpression', t => {})
+test('Editor: updateNodeCredentials', t => {
+  let editor = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let credDef = {}
+  let prefix = 'a'
+  editor.updateNodeCredentials(node, credDef, prefix)
 
-test('Editor: editJSON', t => {})
-test('Editor: stringToUTF8Array', t => {})
-test('Editor: editBuffer', t => {})
-test('Editor: createEditor', t => {})
+  // use nightmare
+})
+
+test.cb('Editor: prepareEditDialog', t => {
+  let editor = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let definition = {}
+  let prefix = 'a'
+  editor.prepareEditDialog(node, definition, prefix, () => {
+    // use nightmare
+    // t.is()
+    t.end()
+  })
+})
+
+test('Editor: getEditStackTitle', t => {
+  let editor = create(ctx)
+  let expected = 'my-title'
+  let title = editor.getEditStackTitle()
+  t.is(title, expected)
+})
+
+test('Editor: buildEditForm', t => {
+  let editor = create(ctx)
+  let container = $('#container')
+  let definition = {}
+  let formId = 'a'
+  let ns = {}
+  editor.buildEditForm(container, formId, type, ns)
+  // use nightmare
+})
+
+test('Editor: refreshLabelForm', t => {
+  let editor = create(ctx)
+  let container = $('#container')
+  let node = {
+    id: 'x'
+  }
+  editor.refreshLabelForm(container, node)
+  // use nightmare
+})
+
+test('Editor: buildLabelRow', t => {
+  let editor = create(ctx)
+  let type = 'io'
+  let index = 0
+  let value = 'hello'
+  let placeholder = 'my-io'
+  editor.buildLabelRow(type, index, value, placeHolder)
+  // use nightmare
+})
+
+test('Editor: buildLabelForm', t => {
+  let editor = create(ctx)
+  let container = $('#container')
+  let node = {
+    id: 'x'
+  }
+  editor.buildLabelForm(container, node)
+  // use nightmare
+})
+
+test('Editor: showEditDialog', t => {
+  let editor = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  editor.showEditDialog(node)
+  // use nightmare
+})
+
+test('Editor: showEditConfigNodeDialog', t => {
+  let editor = create(ctx)
+  let node = {
+    id: 'x'
+  }
+  let type = 'io'
+  let id = 'x'
+  let prefix = 'my-'
+  editor.showEditConfigNodeDialog(name, type, id, prefix)
+  // use nightmare
+})
+
+test('Editor: defaultConfigNodeSort', t => {
+  let editor = create(ctx)
+  let A = {
+    id: 'a'
+  }
+  let B = {
+    id: 'b'
+  }
+  editor.defaultConfigNodeSort(A, B)
+})
+
+test('Editor: updateConfigNodeSelect', t => {
+  let editor = create(ctx)
+  let name = 'x'
+  let type = 'io'
+  let value = '2'
+  let prefix = 'my-'
+  editor.updateConfigNodeSelect(name, type, value, prefix)
+})
+
+test('Editor: showEditSubflowDialog', t => {
+  let editor = create(ctx)
+  let subflow = {}
+  editor.showEditSubflowDialog(subflow)
+})
+
+test('Editor: editExpression', t => {
+  let editor = create(ctx)
+  let options = {}
+  editor.editExpression(options)
+})
+
+test('Editor: editJSON', t => {
+  let editor = create(ctx)
+  let options = {}
+  editor.editJSON(options)
+})
+
+test('Editor: stringToUTF8Array', t => {
+  let editor = create(ctx)
+  let str = 'abc'
+  editor.stringToUTF8Array(str)
+})
+
+test('Editor: editBuffer', t => {
+  let editor = create(ctx)
+  let options = {}
+  editor.editBuffer(options)
+})
+
+test('Editor: createEditor', t => {
+  let editor = create(ctx)
+  let options = {}
+  editor.createEditor(options)
+})
