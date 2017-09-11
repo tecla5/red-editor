@@ -30,17 +30,17 @@ export class NodeConfig extends Context {
     constructor(ctx) {
         super(ctx)
 
-        var node_defs = {};
-        var nodes = [];
-        var configNodes = {};
-        var links = [];
-        var defaultWorkspace;
-        var workspaces = {};
-        var workspacesOrder = [];
-        var subflows = {};
-        var loadedFlowVersion = null;
-        var initialLoad;
-        var dirty = false;
+        this.node_defs = {};
+        this.nodes = [];
+        this.configNodes = {};
+        this.links = [];
+        this.defaultWorkspace;
+        this.workspaces = {};
+        this.workspacesOrder = [];
+        this.subflows = {};
+        this.loadedFlowVersion = null;
+        this.initialLoad;
+        this.dirty = false;
     }
 
     setDirty(d) {
@@ -53,6 +53,7 @@ export class NodeConfig extends Context {
 
 export class Nodes {
     constructor(ctx) {
+        let RED = ctx
         RED.events.on("registry:node-type-added", function (type) {
             var def = registry.getNodeType(type);
             var replaced = false;
@@ -98,15 +99,14 @@ export class Nodes {
     }
 
     configDelegates() {
-        // setNodeList: registry.setNodeList,
-        // getNodeSet: registry.getNodeSet,
-        // addNodeSet: registry.addNodeSet,
-        // removeNodeSet: registry.removeNodeSet,
-        // enableNodeSet: registry.enableNodeSet,
-        // disableNodeSet: registry.disableNodeSet,
-
-        // registerType: registry.registerNodeType,
-        // getType: registry.getNodeType,
+        this.setNodeList = registry.setNodeList
+        this.getNodeSet = registry.getNodeSet
+        this.addNodeSet = registry.addNodeSet
+        this.removeNodeSet = registry.removeNodeSet
+        this.enableNodeSet = registry.enableNodeSet
+        this.disableNodeSet = registry.disableNodeSet
+        this.registerType = registry.registerNodeType
+        this.getType = registry.getNodeType
     }
 
     getID() {
@@ -120,7 +120,7 @@ export class Nodes {
             n["_"] = RED._;
         }
         if (n._def.category == "config") {
-            configNodes[n.id] = n;
+            this.configNodes[n.id] = n;
         } else {
             n.ports = [];
             if (n.wires && (n.wires.length > n.outputs)) {
@@ -132,7 +132,7 @@ export class Nodes {
                 }
             }
             n.dirty = true;
-            updateConfigNodeUsers(n);
+            this.updateConfigNodeUsers(n);
             if (n._def.category == "subflows" && typeof n.i === "undefined") {
                 var nextId = 0;
                 RED.nodes.eachNode(function (node) {
@@ -140,22 +140,22 @@ export class Nodes {
                 });
                 n.i = nextId + 1;
             }
-            nodes.push(n);
+            this.nodes.push(n);
         }
         RED.events.emit('nodes:add', n);
     }
 
     addLink(l) {
-        links.push(l);
+        this.links.push(l);
     }
 
     getNode(id) {
-        if (id in configNodes) {
-            return configNodes[id];
+        if (id in this.configNodes) {
+            return this.configNodes[id];
         } else {
-            for (var n in nodes) {
-                if (nodes[n].id == id) {
-                    return nodes[n];
+            for (var n in this.nodes) {
+                if (this.nodes[n].id == id) {
+                    return this.nodes[n];
                 }
             }
         }
@@ -219,25 +219,25 @@ export class Nodes {
     }
 
     removeLink(l) {
-        var index = links.indexOf(l);
+        var index = this.links.indexOf(l);
         if (index != -1) {
-            links.splice(index, 1);
+            this.links.splice(index, 1);
         }
     }
 
     addWorkspace(ws) {
-        workspaces[ws.id] = ws;
+        this.workspaces[ws.id] = ws;
         ws._def = RED.nodes.getType('tab');
-        workspacesOrder.push(ws.id);
+        this.workspacesOrder.push(ws.id);
     }
 
     getWorkspace(id) {
-        return workspaces[id];
+        return this.workspaces[id];
     }
 
     removeWorkspace(id) {
-        delete workspaces[id];
-        workspacesOrder.splice(workspacesOrder.indexOf(id), 1);
+        delete this.workspaces[id];
+        this.workspacesOrder.splice(workspacesOrder.indexOf(id), 1);
 
         var removedNodes = [];
         var removedLinks = [];
@@ -284,7 +284,7 @@ export class Nodes {
             });
             sf.name = subflowName;
         }
-        subflows[sf.id] = sf;
+        this.subflows[sf.id] = sf;
         RED.nodes.registerType("subflow:" + sf.id, {
             defaults: {
                 name: {
@@ -320,24 +320,24 @@ export class Nodes {
     }
 
     getSubflow(id) {
-        return subflows[id];
+        return this.subflows[id];
     }
 
     removeSubflow(sf) {
-        delete subflows[sf.id];
-        registry.removeNodeType("subflow:" + sf.id);
+        delete this.subflows[sf.id];
+        this.registry.removeNodeType("subflow:" + sf.id);
     }
 
     subflowContains(sfid, nodeid) {
-        for (var i = 0; i < nodes.length; i++) {
-            var node = nodes[i];
+        for (var i = 0; i < this.nodes.length; i++) {
+            var node = this.nodes[i];
             if (node.z === sfid) {
                 var m = /^subflow:(.+)$/.exec(node.type);
                 if (m) {
                     if (m[1] === nodeid) {
                         return true;
                     } else {
-                        var result = subflowContains(m[1], nodeid);
+                        var result = this.subflowContains(m[1], nodeid);
                         if (result) {
                             return true;
                         }
@@ -390,7 +390,7 @@ export class Nodes {
      **/
     convertNode(n, exportCreds) {
         if (n.type === 'tab') {
-            return convertWorkspace(n);
+            return this.convertWorkspace(n);
         }
         exportCreds = exportCreds || false;
         var node = {};
@@ -467,13 +467,13 @@ export class Nodes {
         node.in = [];
         node.out = [];
 
-        n.in.forEach(function (p) {
+        n.in.forEach((p) => {
             var nIn = {
                 x: p.x,
                 y: p.y,
                 wires: []
             };
-            var wires = links.filter(function (d) {
+            var wires = this.links.filter((d) => {
                 return d.source === p
             });
             for (var i = 0; i < wires.length; i++) {
@@ -486,13 +486,13 @@ export class Nodes {
             }
             node.in.push(nIn);
         });
-        n.out.forEach(function (p, c) {
+        n.out.forEach((p, c) => {
             var nOut = {
                 x: p.x,
                 y: p.y,
                 wires: []
             };
-            var wires = links.filter(function (d) {
+            var wires = this.links.filter(function (d) {
                 return d.target === p
             });
             for (i = 0; i < wires.length; i++) {
@@ -578,23 +578,23 @@ export class Nodes {
         var nns = [];
         var i;
         for (i = 0; i < workspacesOrder.length; i++) {
-            if (workspaces[workspacesOrder[i]].type == "tab") {
-                nns.push(convertWorkspace(workspaces[workspacesOrder[i]]));
+            if (this.workspaces[workspacesOrder[i]].type == "tab") {
+                nns.push(this.convertWorkspace(workspaces[workspacesOrder[i]]));
             }
         }
         for (i in subflows) {
-            if (subflows.hasOwnProperty(i)) {
-                nns.push(convertSubflow(subflows[i]));
+            if (this.subflows.hasOwnProperty(i)) {
+                nns.push(this.convertSubflow(subflows[i]));
             }
         }
-        for (i in configNodes) {
-            if (configNodes.hasOwnProperty(i)) {
-                nns.push(convertNode(configNodes[i], exportCredentials));
+        for (i in this.configNodes) {
+            if (this.configNodes.hasOwnProperty(i)) {
+                nns.push(this.convertNode(this.configNodes[i], exportCredentials));
             }
         }
         for (i = 0; i < nodes.length; i++) {
             var node = nodes[i];
-            nns.push(convertNode(node, exportCredentials));
+            nns.push(this.convertNode(node, exportCredentials));
         }
         return nns;
     }
@@ -603,7 +603,7 @@ export class Nodes {
         var i;
         var match = null;
         try {
-            RED.nodes.eachSubflow(function (sf) {
+            RED.nodes.eachSubflow((sf) => {
                 if (sf.name != subflow.name ||
                     sf.info != subflow.info ||
                     sf.in.length != subflow.in.length ||
@@ -726,12 +726,12 @@ export class Nodes {
 
         var activeWorkspace = RED.workspaces.active();
         //TODO: check the z of the subflow instance and check _that_ if it exists
-        var activeSubflow = getSubflow(activeWorkspace);
+        var activeSubflow = this.getSubflow(activeWorkspace);
         for (i = 0; i < newNodes.length; i++) {
             var m = /^subflow:(.+)$/.exec(newNodes[i].type);
             if (m) {
                 var subflowId = m[1];
-                var parent = getSubflow(newNodes[i].z || activeWorkspace);
+                var parent = this.getSubflow(newNodes[i].z || activeWorkspace);
                 if (parent) {
                     var err;
                     if (subflowId === parent.id) {
@@ -779,36 +779,36 @@ export class Nodes {
                     workspace_map[n.id] = nid;
                     n.id = nid;
                 }
-                addWorkspace(n);
+                this.addWorkspace(n);
                 RED.workspaces.add(n);
                 new_workspaces.push(n);
             } else if (n.type === "subflow") {
-                var matchingSubflow = checkForMatchingSubflow(n, nodeZmap[n.id]);
+                var matchingSubflow = this.checkForMatchingSubflow(n, nodeZmap[n.id]);
                 if (matchingSubflow) {
                     subflow_blacklist[n.id] = matchingSubflow;
                 } else {
                     subflow_map[n.id] = n;
                     if (createNewIds) {
-                        nid = getID();
+                        nid = this.getID();
                         n.id = nid;
                     }
                     // TODO: handle createNewIds - map old to new subflow ids
-                    n.in.forEach(function (input, i) {
+                    n.in.forEach((input, i) => {
                         input.type = "subflow";
                         input.direction = "in";
                         input.z = n.id;
                         input.i = i;
-                        input.id = getID();
+                        input.id = this.getID();
                     });
-                    n.out.forEach(function (output, i) {
+                    n.out.forEach((output, i) => {
                         output.type = "subflow";
                         output.direction = "out";
                         output.z = n.id;
                         output.i = i;
-                        output.id = getID();
+                        output.id = this.getID();
                     });
                     new_subflows.push(n);
-                    addSubflow(n, createNewIds);
+                    this.addSubflow(n, createNewIds);
                 }
             }
         }
@@ -817,14 +817,14 @@ export class Nodes {
         if (defaultWorkspace == null) {
             defaultWorkspace = {
                 type: "tab",
-                id: getID(),
+                id: this.getID(),
                 disabled: false,
                 info: "",
                 label: RED._('workspace.defaultName', {
                     number: 1
                 })
             };
-            addWorkspace(defaultWorkspace);
+            this.addWorkspace(defaultWorkspace);
             RED.workspaces.add(defaultWorkspace);
             new_workspaces.push(defaultWorkspace);
             activeWorkspace = RED.workspaces.active();
@@ -864,7 +864,7 @@ export class Nodes {
                             // Check the config nodes on n.z
                             for (var cn in configNodes) {
                                 if (configNodes.hasOwnProperty(cn)) {
-                                    if (configNodes[cn].z === n.z && compareNodes(configNodes[cn], n, false)) {
+                                    if (configNodes[cn].z === n.z && this.compareNodes(configNodes[cn], n, false)) {
                                         existingConfigNode = configNodes[cn];
                                         node_map[n.id] = configNodes[cn];
                                         break;
@@ -901,7 +901,7 @@ export class Nodes {
                     configNode.label = def.label;
                     configNode._def = def;
                     if (createNewIds) {
-                        configNode.id = getID();
+                        configNode.id = this.getID();
                     }
                     node_map[n.id] = configNode;
                     new_nodes.push(configNode);
@@ -947,7 +947,7 @@ export class Nodes {
                                 }
                             }
                         }
-                        node.id = getID();
+                        node.id = this.getID();
                     } else {
                         node.id = n.id;
                         if (node.z == null || (!workspaces[node.z] && !subflow_map[node.z])) {
@@ -1025,7 +1025,7 @@ export class Nodes {
                             }
                         }
                     }
-                    addNode(node);
+                    this.addNode(node);
                     RED.editor.validateNode(node);
                     node_map[n.id] = node;
                     if (node._def.category != "config") {
@@ -1057,7 +1057,7 @@ export class Nodes {
                                     sourcePort: w1,
                                     target: node_map[wires[w2]]
                                 };
-                                addLink(link);
+                                this.addLink(link);
                                 new_links.push(link);
                             } else {
                                 console.log("Warning: dropping link that crosses tabs:", n.id, "->", node_map[wires[w2]].id);
@@ -1107,13 +1107,13 @@ export class Nodes {
                         sourcePort: 0,
                         target: node_map[wire.id]
                     };
-                    addLink(link);
+                    this.addLink(link);
                     new_links.push(link);
                 });
                 delete input.wires;
             });
-            n.out.forEach(function (output) {
-                output.wires.forEach(function (wire) {
+            n.out.forEach((output) => {
+                output.wires.forEach((wire) => {
                     var link;
                     if (subflow_map[wire.id] && subflow_map[wire.id].id == n.id) {
                         link = {
@@ -1128,7 +1128,7 @@ export class Nodes {
                             target: output
                         };
                     }
-                    addLink(link);
+                    this.addLink(link);
                     new_links.push(link);
                 });
                 delete output.wires;
@@ -1246,44 +1246,44 @@ export class Nodes {
     }
 
     getWorkspaceOrder() {
-        return workspacesOrder
+        return this.workspacesOrder
     }
 
     setWorkspaceOrder(order) {
-        workspacesOrder = order;
+        this.workspacesOrder = order;
     }
 
     eachNode(cb) {
-        for (var n = 0; n < nodes.length; n++) {
-            cb(nodes[n]);
+        for (var n = 0; n < this.nodes.length; n++) {
+            cb(this.nodes[n]);
         }
     }
 
     eachLink(cb) {
-        for (var l = 0; l < links.length; l++) {
-            cb(links[l]);
+        for (var l = 0; l < this.links.length; l++) {
+            cb(this.links[l]);
         }
     }
 
     eachConfig(cb) {
-        for (var id in configNodes) {
-            if (configNodes.hasOwnProperty(id)) {
-                cb(configNodes[id]);
+        for (var id in this.configNodes) {
+            if (this.configNodes.hasOwnProperty(id)) {
+                cb(this.configNodes[id]);
             }
         }
     }
 
     eachSubflow(cb) {
-        for (var id in subflows) {
-            if (subflows.hasOwnProperty(id)) {
-                cb(subflows[id]);
+        for (var id in this.subflows) {
+            if (this.subflows.hasOwnProperty(id)) {
+                cb(this.subflows[id]);
             }
         }
     }
 
     eachWorkspace(cb) {
-        for (var i = 0; i < workspacesOrder.length; i++) {
-            cb(workspaces[workspacesOrder[i]]);
+        for (var i = 0; i < this.workspacesOrder.length; i++) {
+            cb(this.workspaces[this.workspacesOrder[i]]);
         }
     }
 
