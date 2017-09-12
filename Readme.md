@@ -2,11 +2,24 @@
 
 Refactoring of NodeRed editor using ES6 modules.
 
+## Pre-requisites
+
+- [Node 8+](https://nodejs.org/en/)
+- [N](https://github.com/tj/n)
+- Npm 5.3+ or [Yarn 1.0+](https://yarnpkg.com/)
+- [Ava 0.22+](https://github.com/avajs/ava)
+
+`npm i -g n yarn ava`
+
+Install latest node version:
+
+`n latest`
+
 ## Packaging
 
-Packaged using [Webpack 3](https://medium.com/webpack/webpack-3-official-release-15fd2dd8f07b)
+Editor is packaged using [Webpack 3](https://medium.com/webpack/webpack-3-official-release-15fd2dd8f07b)
 
-See `/webpack` folder. Uses babili to uglify and compress for production
+See `/webpack` folder. Webpack is configured to use babili to uglify and compress for production.
 
 ### Development
 
@@ -18,13 +31,24 @@ See `/webpack` folder. Uses babili to uglify and compress for production
 
 ## Source
 
-The `src/new` folder contains the refactored editor.
+- `src/legacy` contains the old (working) editor code.
+- `src/new` contains the new refactored editor code using classes.
 
-Most of the old global object entries such as `RED.editor` have been refactored as classes.
+`src/new/red.js` attempts to reconstruct the global `RED` object using these classes.
 
-`src/new/red.js` currently attempts to reconstruct the global `RED` object using these classes.
+The refactored code is a WIP and has not yet been tested and (might) lack some "stitching" to recreate a fully working `RED` application object.
 
-This has not yet been tested and (migh) lack some "stitching" to recreate full `RED` application object. Please make it fully work using TDD (ie. `ava` unit tests)!
+The source code is written using ES2017 syntax, transpiled to ES5 using [babelJS](https://babeljs.io/)
+
+Please make the new/refactored code work using TDD, ie. with [ava](https://github.com/avajs/ava) unit tests and nightmare E2E tests.
+
+Please note that the editor needs [red-api](https://github.com/tecla5/red-api) for core functionality.
+
+```json
+"dependencies": {
+  "red-api": "github:tecla5/red-api"
+},
+```
 
 ## Assets
 
@@ -44,7 +68,21 @@ Each component should be tested individually use Vue best practices.
 
 For unit tests use [ava](https://github.com/avajs/ava) test runner.
 
-E2E (ie. User Acceptance) Tests must be written using [NightmareJS](http://www.nightmarejs.org/) with async/await syntax.
+### Run tests
+
+run all tests:
+
+- `npm test`
+
+run a particular test:
+
+- `ava test/comms.test.js`
+
+### E2E tests
+
+E2E (ie. User Acceptance) tests must be written using [NightmareJS](http://www.nightmarejs.org/) with modern async/await syntax.
+
+See [nightmare API](https://github.com/segmentio/nightmare#api)
 
 ```js
 var Nightmare = require('nightmare'),
@@ -80,4 +118,28 @@ async function run () {
 };
 
 run();
+```
+
+You can run nightmare tests with `ava` test runner.
+You can use nightmare E2E with ava assertions.
+
+```js
+import Nightmare from 'nightmare';
+import test from 'ava';
+
+test('should find the nightmare github link first', async t => {
+  const nightmare = Nightmare()
+  let link = await nightmare
+    .goto('https://duckduckgo.com')
+    .type('#search_form_input_homepage', 'github nightmare')
+    .click('#search_button_homepage')
+    .wait('#zero_click_wrapper .c-info__title a')
+    .evaluate(() =>
+      document.querySelector('#zero_click_wrapper .c-info__title a').href
+    )
+    .end()
+
+  // test link found
+  t.is(link, 'https://github.com/segmentio/nightmare')
+})
 ```

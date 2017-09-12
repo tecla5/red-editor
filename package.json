@@ -18,6 +18,9 @@
   },
   "author": "Kristian Mandrup",
   "license": "ISC",
+  "dependencies": {
+    "red-api": "github:tecla5/red-api"
+  },
   "devDependencies": {
     "ava": "^0.22.0",
     "babel-cli": "^6.24.0",
