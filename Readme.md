@@ -4,28 +4,45 @@ Refactoring of NodeRed editor using ES6 modules.
 
 ## Packaging
 
-Should be packaged using [Webpack 3](https://medium.com/webpack/webpack-3-official-release-15fd2dd8f07b)
+Packaged using [Webpack 3](https://medium.com/webpack/webpack-3-official-release-15fd2dd8f07b)
 
-## Status
+See `/webpack` folder. Uses babili to uglify and compress for production
+
+### Development
+
+`npm run build:dev` - builds development version: `bundle.js`
+
+### Production
+
+`npm run build:prod` - builds production version: `bundle.prod.js`
+
+## Source
 
 The `src/new` folder contains the refactored editor.
 
-Most of the old "global object entries" have been refactored as classes. Not yet tested and lacks some "stitching" to recreate full `RED` application object.
-Please make it fully work using TDD (ie. `ava` unit tests)!
+Most of the old global object entries such as `RED.editor` have been refactored as classes.
 
-TODO: No refactoring work has yet been done no `new/text` and `new/ui` folders.
+`src/new/red.js` currently attempts to reconstruct the global `RED` object using these classes.
 
-## Process
+This has not yet been tested and (migh) lack some "stitching" to recreate full `RED` application object. Please make it fully work using TDD (ie. `ava` unit tests)!
 
-First step is to make a simple refactoring and make it work using original functionality with jQuery etc. This is a Work in Progress (WIP)
+## Assets
 
-2nd step will be to convert each main UI component such as `Palette`, `Sidebar` etc. into Vue components that can be imported and used in a Vue app.
+The `/assets` folder contains the original assets used to generate the main HTML page.
+
+`templates/index.mst` contains a [mustache](https://mustache.github.io/) template to create the HTML. This can be used for E2E testing using [nightmare](nightmarejs.org/) (ie. better Jasmine)
+
+## Development Process
+
+First step is to make the simple (class) refactoring work using original functionality with jQuery etc. This is a current Work in Progress (WIP)
+
+Next step will be to convert each main UI component such as `Palette`, `Sidebar` etc. into [Vue components](https://vuejs.org/v2/guide/components.html) that can be imported and used in a Vue app.
 
 Each component should be tested individually use Vue best practices.
 
 ## Tests
 
-For unit tests, always use [ava](https://github.com/avajs/ava) test runner.
+For unit tests use [ava](https://github.com/avajs/ava) test runner.
 
 E2E (ie. User Acceptance) Tests must be written using [NightmareJS](http://www.nightmarejs.org/) with async/await syntax.
 
