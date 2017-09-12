@@ -1,0 +1,17 @@
+<div id="node-dialog-library-lookup" class="hide">
+    <form class="form-horizontal">
+        <div class="form-row">
+            <ul id="node-dialog-library-breadcrumbs" class="breadcrumb">
+                <li class="active"><a href="#" data-i18n="[append]library.breadcrumb"></a></li>
+            </ul>
+        </div>
+        <div class="form-row">
+            <div style="vertical-align: top; display: inline-block; height: 100%; width: 30%; padding-right: 20px;">
+                <div id="node-select-library" style="border: 1px solid #999; width: 100%; height: 100%; overflow:scroll;"><ul></ul></div>
+            </div>
+            <div style="vertical-align: top; display: inline-block;width: 65%; height: 100%;">
+                <div style="height: 100%; width: 95%;" class="node-text-editor" id="node-select-library-text" ></div>
+            </div>
+        </div>
+    </form>
+</div>

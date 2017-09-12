@@ -1,0 +1,6 @@
+<div id="node-dialog-library-save-confirm" class="hide">
+    <form class="form-horizontal">
+        <div style="text-align: center; padding-top: 30px;" id="node-dialog-library-save-content">
+        </div>
+    </form>
+</div>

@@ -50,11 +50,52 @@ Please note that the editor needs [red-api](https://github.com/tecla5/red-api) f
 },
 ```
 
-## Assets
+## Rendering the UI
 
 The `/assets` folder contains the original assets used to generate the main HTML page.
 
-`templates/index.mst` contains a [mustache](https://mustache.github.io/) template to create the HTML. This can be used for E2E testing using [nightmare](nightmarejs.org/) (ie. better Jasmine)
+The UI is rendered via mustache templates (with partials) in [red-api/src/new/api/ui.js](https://github.com/tecla5/red-api/blob/master/src/new/api/ui.js)
+
+```js
+class Ui {
+  // ...
+  _loadSharedPartials() {
+      var partials = {};
+      let rootDir = './editor/templates'
+      var recursiveReadSync = require('recursive-readdir-sync')
+      var files = recursiveReadSync(rootDir)
+      for (var i = 0, l = files.length; i < l; i++) {
+          var file = files[i];
+
+          if (file.match(/\.mst$/)) {
+              var name = path.basename(file, '.mst');
+              let contents = fs.readFileSync(file, 'utf8');
+              partials[name] = contents
+          }
+      }
+
+      return partials;
+  }
+
+  editor(req, res) {
+      let partials = _loadSharedPartials()
+      // console.log({
+      //     partials: Object.keys(partials)
+      // })
+      let html = Mustache.render(editorTemplate, theme.context(), partials)
+      res.send(html);
+  }
+}
+```
+
+Note: The legacy node-red code did not use partials.
+
+## Assets
+
+`templates/index.mst` contains a [mustache](https://mustache.github.io/) template to create the HTML.
+
+The template needs to be rendered in order to do E2E testing using [nightmare](nightmarejs.org/) (ie. better Jasmine). Alternatively create static pages for testing.
+The HTML pages rendered must load the javascript built using webpack.
 
 ## Development Process
 
@@ -63,6 +104,84 @@ First step is to make the simple (class) refactoring work using original functio
 Next step will be to convert each main UI component such as `Palette`, `Sidebar` etc. into [Vue components](https://vuejs.org/v2/guide/components.html) that can be imported and used in a Vue app.
 
 Each component should be tested individually use Vue best practices.
+
+## Theming
+
+Theming can be done in the `red/api/theme.js` file
+The `defaultContext` is loaded from `./default-context`. It contains the basic Them "outline", including `header`, `favicon`, `icon` and `title`, logo image and more...
+We have currently changed:
+
+- `title` to `'App Orchestrator'`
+
+```js
+const title = 'App Orchestrator'
+
+module.exports = {
+  page: {
+    title: title,
+    favicon: "favicon.ico",
+    tabicon: "red/images/node-red-icon-black.svg"
+  },
+  header: {
+    title: title,
+    image: "red/images/node-red.png"
+  },
+  asset: {
+    red: (process.env.NODE_ENV == "development") ? "red/red.es5.js" : "red/red.min.js",
+    main: (process.env.NODE_ENV == "development") ? "red/main.es5.js" : "red/main.min.js",
+
+  }
+};
+```
+
+See `theme_spec.js` for examples on how to customize theming.
+
+The theme when fully configured is sent to the Mustache template in `editor/templates/new/index.mst`
+
+```html
+<div id="header">
+    <span class="logo">{{#header.url}}<a href="{{.}}">{{/header.url}}{{#header.image}}<img src="{{.}}" title="{{version}}">{{/header.image}} <span>{{ header.title }}</span>{{#header.url}}</a>{{/header.url}}</span>
+    <ul class="header-toolbar hide">
+        <li><a id="btn-sidemenu" class="button" data-toggle="dropdown" href="#"><i class="fa fa-bars"></i></a></li>
+    </ul>
+    <div id="header-shade" class="hide"></div>
+</div>
+<div id="main-container" class="sidebar-closed hide">
+    <div id="workspace">
+    ...
+    </div>
+</div>
+```
+
+Here you can add login/logout buttons and use other custom theming variables as you see fit :)
+
+We should be leveraging [Partials](https://github.com/janl/mustache.js/#partials) for easier re-factoring of the UI.
+
+Partials begin with a greater than sign, like `{{> box}}`. The partial will inherit the  variables from the calling context
+
+`base.mustache` file
+
+```
+<h2>Names</h2>
+{{#names}}
+  {{> user}}
+{{/names}}
+```
+
+`user.mustache` file
+
+```
+<strong>{{name}}</strong>
+```
+
+Can be thought of as a single, expanded template:
+
+```
+<h2>Names</h2>
+{{#names}}
+  <strong>{{name}}</strong>
+{{/names}}
+```
 
 ## Tests
 
