@@ -9,7 +9,7 @@ Refactoring of NodeRed editor using ES6 modules.
 - Npm 5.3+ or [Yarn 1.0+](https://yarnpkg.com/)
 - [Ava 0.22+](https://github.com/avajs/ava)
 
-`npm i -g n yarn ava`
+`npm i -g testcafe http-server n yarn ava`
 
 Install latest node version:
 
@@ -82,6 +82,10 @@ run a particular test:
 
 E2E (ie. User Acceptance) tests must be written using [NightmareJS](http://www.nightmarejs.org/) with modern async/await syntax.
 
+Tests should be written using [Page Objects](https://martinfowler.com/bliki/PageObject.html) design pattern and should be run via [test cafe](https://github.com/DevExpress/testcafe)
+
+Please see [How to set up E2E browser testing](https://hackernoon.com/how-to-set-up-e2e-browser-testing-for-your-github-project-89c24e15a84)
+
 See [nightmare API](https://github.com/segmentio/nightmare#api)
 
 ```js
@@ -120,8 +124,9 @@ async function run () {
 run();
 ```
 
-You can run nightmare tests with `ava` test runner.
-You can use nightmare E2E with ava assertions.
+### Ava nightmare
+
+You can also run nightmare tests with `ava` test runner using ava assertions.
 
 ```js
 import Nightmare from 'nightmare';
