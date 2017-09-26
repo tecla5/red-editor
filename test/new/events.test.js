@@ -1,4 +1,4 @@
-import ava from 'ava'
+import test from 'ava'
 import {
   Events
 } from './api'

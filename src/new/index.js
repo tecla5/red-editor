@@ -22,12 +22,6 @@ export {
 from './text'
 
 export {
-  TextFormat,
-  Bidi
-}
-from './text'
-
-export {
   Communications
 }
 from './comms'

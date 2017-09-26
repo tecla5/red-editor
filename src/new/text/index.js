@@ -4,6 +4,7 @@ export {
 from './bidi'
 
 export {
-  TextFormat
+  TextFormat,
+  format
 }
 from './format'

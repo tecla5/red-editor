@@ -1,5 +1,5 @@
 const nightmare = require('../nightmare')
-import ava from 'ava'
+import test from 'ava'
 import {
   Clipboard
 } from './ui'

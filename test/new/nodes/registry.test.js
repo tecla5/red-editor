@@ -1,5 +1,6 @@
 const nightmare = require('../nightmare')
-import ava from 'ava'
+
+import test from 'ava'
 import {
   NodesRegistry
 } from '../ui'

@@ -8,4 +8,4 @@ export {
   User,
   Validators
 }
-from '../../src'
+from '../../src/new'

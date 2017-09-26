@@ -25,10 +25,32 @@ import {
 
   History,
   Nodes,
-  TextFormat,
-  Bidi,
+  // TextFormat,
+  // Bidi,
 }
 from '.'
+
+import {
+  TextFormat,
+  Bidi
+}
+from './text'
+
+
+console.log({
+  Communications,
+  Events,
+  I18n,
+  Main,
+  Settings,
+  User,
+  Validators,
+
+  History,
+  Nodes,
+  TextFormat,
+  Bidi,
+})
 
 var ctx = {};
 ctx.text = {

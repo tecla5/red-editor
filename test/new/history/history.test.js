@@ -1,4 +1,4 @@
-import ava from 'ava'
+import test from 'ava'
 import {
   History
 } from '../api'
