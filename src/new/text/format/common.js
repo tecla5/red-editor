@@ -1,3 +1,7 @@
+import {
+  tools
+} from './tools'
+
 export const common = (function () {
   return {
     handle: function (content, segments, args, locale) {

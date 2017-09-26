@@ -1,3 +1,8 @@
+import {
+  stext
+}
+from './stext'
+
 export const comma = (function () {
   return {
     format: function (text, args, isRtl, isHtml, locale, parseOnly) {

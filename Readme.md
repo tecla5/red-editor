@@ -189,13 +189,21 @@ For unit tests use [ava](https://github.com/avajs/ava) test runner.
 
 ### Run tests
 
-run all tests:
+Run all tests:
 
-- `npm test`
+`$ npm test`
 
-run a particular test:
+Run a particular test:
 
-- `ava test/comms.test.js`
+`$ ava test/comms.test.js`
+
+## Test/Refactoring strategy
+
+Start bottom up, working on the simplest, bottom down classes/modules first, those with less dependencies and less complex code. Gradually work your way bottom up, breadth first.
+
+Currently the following test is a good starting point:
+
+`$ ava test/new/text/format/breadcrumb.test.js`
 
 ### E2E tests
 

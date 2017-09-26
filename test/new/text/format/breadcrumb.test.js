@@ -14,5 +14,6 @@ test('breadcrumb: structure', t => {
 
 // format(text, args, isRtl, isHtml, locale, parseOnly)
 test('breadcrumb: format text', t => {
-  t.truthy(breadcrumb.format('x'))
+  let text = 'my text'
+  t.truthy(breadcrumb.format(text))
 })

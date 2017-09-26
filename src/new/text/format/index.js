@@ -14,67 +14,6 @@
  * limitations under the License.
  **/
 
-class TextSegment {
-    constructor(obj) {
-        this.content = "";
-        this.actual = "";
-        this.textDirection = "";
-        this.localGui = "";
-        this.isVisible = true;
-        this.isSeparator = false;
-        this.isParsed = false;
-        this.keep = false;
-        this.inBounds = false;
-        this.inPoints = false;
-        var prop = "";
-        for (prop in obj) {
-            if (obj.hasOwnProperty(prop)) {
-                this[prop] = obj[prop];
-            }
-        }
-    }
-}
-
-class Tools {
-    initBounds(bounds) {
-        if (!bounds) {
-            return false;
-        }
-        if (typeof (bounds.start) === "undefined") {
-            bounds.start = "";
-        }
-        if (typeof (bounds.end) === "undefined") {
-            bounds.end = "";
-        }
-        if (typeof (bounds.startAfter) !== "undefined") {
-            bounds.start = bounds.startAfter;
-            bounds.after = true;
-        } else {
-            bounds.after = false;
-        }
-        if (typeof (bounds.endBefore) !== "undefined") {
-            bounds.end = bounds.endBefore;
-            bounds.before = true;
-        } else {
-            bounds.before = false;
-        }
-        var startPos = parseInt(bounds.startPos, 10);
-        if (!isNaN(startPos)) {
-            bounds.usePos = true;
-        } else {
-            bounds.usePos = false;
-        }
-        var bLength = parseInt(bounds.length, 10);
-        if (!isNaN(bLength)) {
-            bounds.useLength = true;
-        } else {
-            bounds.useLength = false;
-        }
-        bounds.loops = typeof (bounds.loops) !== "undefined" ? !!bounds.loops : true;
-        return true;
-    }
-}
-
 // TODO:
 // must likely used more within each utility function than here or externally ;)
 import {
