@@ -1,5 +1,14 @@
-export const email = (function () {
-  function getDir(text, locale) {
+import {
+  stext
+}
+from './stext'
+import {
+  misc
+}
+from './misc'
+
+class Email {
+  getDir(text, locale) {
     if (misc.getLocaleDetails(locale).lang !== "ar") {
       return "ltr";
     }
@@ -10,33 +19,34 @@ export const email = (function () {
     return "ltr";
   }
 
-  return {
-    format: function (text, args, isRtl, isHtml, locale, parseOnly) {
-      var fArgs = {
-        guiDir: isRtl ? "rtl" : "ltr",
-        dir: getDir(text, locale),
-        points: "<>.:,;@",
-        cases: [{
-          handler: common,
-          args: {
-            bounds: [{
-                startAfter: "\"",
-                endBefore: "\""
-              },
-              {
-                startAfter: "(",
-                endBefore: ")"
-              }
-            ],
-            points: ""
-          }
-        }]
-      };
-      if (!parseOnly) {
-        return stext.parseAndDisplayStructure(text, fArgs, !!isHtml, locale);
-      } else {
-        return stext.parseStructure(text, fArgs, !!isHtml, locale);
-      }
+
+  format(text, args, isRtl, isHtml, locale, parseOnly) {
+    var fArgs = {
+      guiDir: isRtl ? "rtl" : "ltr",
+      dir: getDir(text, locale),
+      points: "<>.:,;@",
+      cases: [{
+        handler: common,
+        args: {
+          bounds: [{
+              startAfter: "\"",
+              endBefore: "\""
+            },
+            {
+              startAfter: "(",
+              endBefore: ")"
+            }
+          ],
+          points: ""
+        }
+      }]
+    };
+    if (!parseOnly) {
+      return stext.parseAndDisplayStructure(text, fArgs, !!isHtml, locale);
+    } else {
+      return stext.parseStructure(text, fArgs, !!isHtml, locale);
     }
-  };
-})();
+  }
+}
+
+export const email = new Email()

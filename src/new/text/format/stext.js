@@ -1,6 +1,13 @@
-export const stext = (function () {
-  var stt = {};
+import {
+  common
+}
+from './stext'
+import {
+  misc
+}
+from './stext'
 
+class SText {
   // args
   //   handler: main handler (default - dbidi/stt/handlers/common)
   //   guiDir: GUI direction (default - "ltr")
@@ -10,14 +17,14 @@ export const stext = (function () {
   //   bounds: array of definitions of bounds in which handler works
   //   subs: object defines special handling for some substring if found
   //   cases: array of additional modules with their args for handling special cases (default - [])
-  function parseAndDisplayStructure(content, fArgs, isHtml, locale) {
+  parseAndDisplayStructure(content, fArgs, isHtml, locale) {
     if (!content || !fArgs) {
       return content;
     }
-    return displayStructure(parseStructure(content, fArgs, locale), fArgs, isHtml);
+    return this.displayStructure(parseStructure(content, fArgs, locale), fArgs, isHtml);
   }
 
-  function checkArguments(fArgs, fullCheck) {
+  checkArguments(fArgs, fullCheck) {
     var args = Array.isArray(fArgs) ? fArgs[0] : fArgs;
     if (!args.guiDir) {
       args.guiDir = "ltr";
@@ -41,13 +48,13 @@ export const stext = (function () {
     return args;
   }
 
-  function parseStructure(content, fArgs, locale) {
+  parseStructure(content, fArgs, locale) {
     if (!content || !fArgs) {
       return new TextSegment({
         content: ""
       });
     }
-    var args = checkArguments(fArgs, true);
+    var args = this.checkArguments(fArgs, true);
     var segments = [new TextSegment({
       content: content,
       actual: content,
@@ -61,16 +68,16 @@ export const stext = (function () {
     return segments;
   }
 
-  function displayStructure(segments, fArgs, isHtml) {
-    var args = checkArguments(fArgs, false);
+  displayStructure(segments, fArgs, isHtml) {
+    var args = this.checkArguments(fArgs, false);
     if (isHtml) {
-      return getResultWithHtml(segments, args);
+      return this.getResultWithHtml(segments, args);
     } else {
-      return getResultWithUcc(segments, args);
+      return this.getResultWithUcc(segments, args);
     }
   }
 
-  function getResultWithUcc(segments, args, isHtml) {
+  getResultWithUcc(segments, args, isHtml) {
     var result = "";
     var checkedDir = "";
     var prevDir = "";
@@ -116,7 +123,7 @@ export const stext = (function () {
     return result;
   }
 
-  function getResultWithHtml(segments, args, isHtml) {
+  getResultWithHtml(segments, args, isHtml) {
     var result = "";
     var checkedDir = "";
     var prevDir = "";
@@ -164,14 +171,9 @@ export const stext = (function () {
   }
 
   //TBD ?
-  function restore(text, isHtml) {
+  restore(text, isHtml) {
     return text;
   }
+}
 
-  stt.parseAndDisplayStructure = parseAndDisplayStructure;
-  stt.parseStructure = parseStructure;
-  stt.displayStructure = displayStructure;
-  stt.restore = restore;
-
-  return stt;
-})();
+export const stext = new SText()

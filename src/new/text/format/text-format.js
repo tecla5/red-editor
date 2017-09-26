@@ -1,8 +1,4 @@
 export class TextFormat {
-  constructor() {
-
-  }
-
   getBounds(segment, src) {
     var bounds = {};
     for (var prop in src) {

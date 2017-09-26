@@ -1,7 +1,6 @@
 export class Tools {
-  constructor() {
-    // TODO: maintain instance vars shared across internal function scopes
-  }
+  // TODO: maintain instance vars shared across internal function scopes
+  constructor() {}
 
   initBounds(bounds) {
     if (!bounds) {
