@@ -55,6 +55,18 @@ Please note that the editor needs [red-api](https://github.com/tecla5/red-api) f
 },
 ```
 
+## Main components
+
+- Top bar (top)
+- Menu (in right side of top bar)
+- Nodes Palette (left panel)
+- Sidebar (right panel)
+- Flow Canvas area (center)
+- Node editor dialogue (model, when node in canvas is clicked)
+- Tray (bottom, notifications area)
+- Node Diff (modal, via menu)
+- User settings (modal, via menu)
+
 ## Structural Overview
 
 - `Communications` socket communication
@@ -73,45 +85,50 @@ Please note that the editor needs [red-api](https://github.com/tecla5/red-api) f
 
 ### Ui structure
 
-- `Actions`
-- `Clipboard`
-- `Diff`
-- `Editor`
-- `Library`
-- `Search`
-- `Subflow`
-- `Tray`
-- `TypeSearch`
-- `Ui`
-- `UserSettings`
-- `Workspaces`
+- `Actions` actions (create, add, remove, get, list, invoke)
+- `Clipboard` clipboard management
+- `Diff` calculate and show nodes difference
+- `Editor` manage and display node editor
+- `Library` manage node library (load, save, export)
+- `Notifications` notify and display notifications
+- `Search` Search for nodes. Display and manage search dialog
+- `Subflow` manage and display subflow of nodes
+- `Tray` display and manage tray (notifications bar), similar to windows bottom tray bar
+- `TypeSearch` search for node by type? Display and manage search dialog
+- `UserSettings` display and manage user settings pane
+- `Workspaces` display and manage workspaces (dialogs + tabs)
 
 #### Common
 
-- `CheckboxSet`
-- `EditableList`
-- `Menu`
-- `Panels`
-- `Popover`
-- `SearchBox`
-- `Stack`
-- `Tabs`
-- `TypedInput`
+jQuery widgets
+
+- `CheckboxSet` jQuery widget to display and manage set (group) of checkboxes
+- `EditableList` jQuery widget to display and manage editable list (add/remove items)
+- `SearchBox` jquery widget to display and manage search box
+- `TypedInput` jQuery widget to display and manage a typed input (such as numbers only etc.). See validators
+
+Classes
+
+- `Menu` display and manage menu (in topbar), using menu data from settings
+- `Panels` display panel (including drag bar to resize panels)
+- `Popover` display and manage popover (modal notification)
+- `Stack` display and manage stack of items (used in node palette)
+- `Tabs` display and manage tabs (containing flows of nodes)
 
 #### Palette
 
-- `PaletteEditor`
-- `Palette`
+- `PaletteEditor` display and manage palette category (and interaction with canvas via events?)
+- `Palette` display and manage full nodes palette with all categories
 
 #### Sidebar
 
-- `Sidebar`
-- `TabConfig`
-- `TabInfo`
+- `Sidebar` display and manage sidebar including tabs
+- `SidebarTabConfig` display and manage sidebar tab configuration and main behavior
+- `SidebarTabInfo` display and manage tab content, tips etc.
 
 #### Touch
 
-- `RadialMenu`
+- `RadialMenu` display and manage D3 radial menu
 
 ## Rendering the UI
 

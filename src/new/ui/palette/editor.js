@@ -20,6 +20,7 @@ import {
 export class PaletteEditor extends Context {
     constructor(ctx) {
         super(ctx)
+        var RED = ctx
         this.disabled = false;
 
         // editorTabs;
