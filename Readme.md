@@ -2,6 +2,11 @@
 
 Refactoring of NodeRed editor using ES6 modules.
 
+## Community
+
+- [Slack](https://nodered.org/slack/)
+- [Github organisation](https://github.com/node-red)
+
 ## Pre-requisites
 
 - [Node 8+](https://nodejs.org/en/)
