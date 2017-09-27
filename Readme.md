@@ -128,7 +128,7 @@ Classes
 
 #### Touch
 
-- `RadialMenu` display and manage D3 radial menu
+- `RadialMenu` display and manage D3 radial menu. Activated by long-touch event (for touch devices). Context-specific actions for the current selection - such as delete, edit, copy, paste
 
 ## Rendering the UI
 
