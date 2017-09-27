@@ -152,7 +152,7 @@ jQuery widgets
 Classes
 
 - `Menu` display and manage menu (in topbar), using menu data from settings
-- `Panels` display panel (including drag bar to resize panels)
+- `Panel` display panel (including drag bar to resize panels)
 - `Popover` display and manage popover (modal notification)
 - `Stack` display and manage stack of items (used in node palette)
 - `Tabs` display and manage tabs (containing flows of nodes)

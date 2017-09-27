@@ -5,7 +5,7 @@ from './menu'
 export {
   Panel
 }
-from './panels'
+from './panel'
 export {
   Popover
 }
