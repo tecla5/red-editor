@@ -67,6 +67,43 @@ Please note that the editor needs [red-api](https://github.com/tecla5/red-api) f
 - Node Diff (modal, via menu)
 - User settings (modal, via menu)
 
+### Top bar
+
+Displays logo, main menu and user session state
+
+### Menu
+
+Displays list of global options/actions, such as load/export nodes etc.
+
+### Nodes palette
+
+Display all the nodes available to be used on canvas
+
+### Sidebar
+
+Displays tabs with information.
+The `run` tab displays logs when running a flow
+
+### Flow canvas
+
+Canvas area to draw flows, via nodes and connections
+
+### Node editor
+
+Modal dialogue containing a form with fields for the particular node selected
+
+### Tray
+
+Tray is used for the node editor dialogue, user settings and node diff.
+
+### Node diff
+
+Display modal with node difference
+
+### User settings
+
+Displays modal form with user settings
+
 ## Structural Overview
 
 - `Communications` socket communication
