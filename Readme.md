@@ -123,7 +123,7 @@ Tray panel form with user settings
 - `NodeRegistry` registry of available nodes
 - `Nodes` collection of nodes
 - `TextFormat` used to format text for url, email etc. for HTML display
-- `Bidi` bidirectional text diaplay (RTL - Right then Left, LTR - Left then Right)
+- `Bidi` bidirectional text display (RTL - Right then Left, LTR - Left then Right)
 
 ### Ui structure
 
@@ -135,7 +135,7 @@ Tray panel form with user settings
 - `Notifications` notify and display notifications
 - `Search` Search for nodes. Display and manage search dialog
 - `Subflow` manage and display subflow of nodes
-- `Tray` display and manage tray (notifications bar), similar to windows bottom tray bar
+- `Tray` display and manage tray bar (slide-in modal panel, on top of right side of canvas)
 - `TypeSearch` search for node by type? Display and manage search dialog
 - `UserSettings` display and manage user settings pane
 - `Workspaces` display and manage workspaces (dialogs + tabs)
