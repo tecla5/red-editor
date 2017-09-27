@@ -127,6 +127,8 @@ Tray panel form with user settings
 
 ### Ui structure
 
+See [node-red UI API](https://nodered.org/docs/api/ui/) for more details
+
 - `Actions` actions (create, add, remove, get, list, invoke)
 - `Clipboard` clipboard management
 - `Diff` calculate and show nodes difference
