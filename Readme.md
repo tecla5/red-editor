@@ -90,19 +90,24 @@ Canvas area to draw flows, via nodes and connections
 
 ### Node editor
 
-Modal dialogue containing a form with fields for the particular node selected
+Tray panel form with fields for node properties of the particular node selected.
+Double clicking a node opens the Node editor dialog.
+
+Custom Nodes can be designed as separate node modules that can be plugged in.
+The node configuration is used by Node editor to display appropriate form fields to correctly edit each of the node properties as per the configuration.
 
 ### Tray
 
 Tray is used for the node editor dialogue, user settings and node diff.
+The Node editor, User settings and Node diff are presented in a tray that slides in.
 
 ### Node diff
 
-Display modal with node difference
+Tray panel with node difference
 
 ### User settings
 
-Displays modal form with user settings
+Tray panel form with user settings
 
 ## Structural Overview
 
