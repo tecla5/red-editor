@@ -50,6 +50,64 @@ Please note that the editor needs [red-api](https://github.com/tecla5/red-api) f
 },
 ```
 
+## Structural Overview
+
+- `Communications` socket communication
+- `Events` event notifications (publish/subscribe)
+- `I18n` Internationalization
+- `Main` Application loader. Loads nodes, flows and editor
+- `Settings` Load/save application settings using local storage and ajax. Includes theming.
+- `User` user login/logout and control user menu (ie. session state)
+- `Validators` validate number, regex and typed inputs in editor
+- `History` history action stack (push/pop) with undo/redo
+- `NodeConfig` single node configuration (state)
+- `NodeRegistry` registry of available nodes
+- `Nodes` collection of nodes
+- `TextFormat` used to format text for url, email etc. for HTML display
+- `Bidi` bidirectional text diaplay (RTL - Right then Left, LTR - Left then Right)
+
+### Ui structure
+
+- `Actions`
+- `Clipboard`
+- `Diff`
+- `Editor`
+- `Library`
+- `Search`
+- `Subflow`
+- `Tray`
+- `TypeSearch`
+- `Ui`
+- `UserSettings`
+- `Workspaces`
+
+#### Common
+
+- `CheckboxSet`
+- `EditableList`
+- `Menu`
+- `Panels`
+- `Popover`
+- `SearchBox`
+- `Stack`
+- `Tabs`
+- `TypedInput`
+
+#### Palette
+
+- `PaletteEditor`
+- `Palette`
+
+#### Sidebar
+
+- `Sidebar`
+- `TabConfig`
+- `TabInfo`
+
+#### Touch
+
+- `RadialMenu`
+
 ## Rendering the UI
 
 The `/assets` folder contains the original assets used to generate the main HTML page.
